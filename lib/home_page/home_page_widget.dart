@@ -66,7 +66,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Data e hora',
+                      valueOrDefault<String>(
+                        _model.data?.toString(),
+                        'Data e hora',
+                      ),
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Inter',
                             fontSize: 24.0,
@@ -178,6 +181,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         await actions.alarme(
                           _model.data!,
                           1,
+                          'Alarme do marcos',
+                          'Escreva qualquer mensagem',
                         );
                       },
                       text: 'Agendar alarme',

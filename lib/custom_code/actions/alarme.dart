@@ -18,10 +18,12 @@ class AlarmStorage {
   }
 }
 
-// Função para agendar um alarme com data e id como parâmetros
+// Função para agendar um alarme com data, id, título e corpo da notificação como parâmetros
 Future<void> alarme(
   DateTime data,
   int id,
+  String titulo,
+  String notificationbody,
 ) async {
   // Inicializa o Alarm service
   await Alarm.init();
@@ -31,11 +33,12 @@ Future<void> alarme(
     id: id, // Utiliza o id fornecido como identificador do alarme
     dateTime: data, // Utiliza a data fornecida como horário do alarme
     assetAudioPath:
-        'assets/alarm.mp3', // Caminho do arquivo de áudio para o alarme
+        'assets/alarm.mp3', // Caminho do arquivo de áudio para o alarme (opcional)
     loopAudio: false,
     vibrate: true,
-    notificationTitle: 'Alarme',
-    notificationBody: 'Seu alarme está tocando',
+    notificationTitle: titulo, // Utiliza o título fornecido para a notificação
+    notificationBody:
+        notificationbody, // Utiliza o corpo da notificação fornecido
     enableNotificationOnKill: true,
     androidFullScreenIntent: true,
   );
@@ -53,10 +56,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AlarmStorage.init();
 
-  // Exemplo de chamada da função com data e id como parâmetros
+  // Exemplo de chamada da função com data, id, título e notificationbody como parâmetros
   DateTime alarmeData = DateTime.now().add(const Duration(seconds: 10));
   await alarme(
-      alarmeData, 1); // Chamando a função passando a data e o id do alarme
+    alarmeData, // Data do alarme
+    1, // ID do alarme
+    'Lembrete', // Título do alarme
+    'É hora de fazer uma pausa!', // Corpo da notificação
+  );
 
   runApp(MyApp());
 }
