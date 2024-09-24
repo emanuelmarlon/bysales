@@ -9,3 +9,4 @@ export 'imprimir_base64.dart' show imprimirBase64;
 export 'convert.dart' show convert;
 export 'alarme.dart' show alarme;
 export 'new_custom_action.dart' show newCustomAction;
+export 'agendar_alarme.dart' show agendarAlarme;
