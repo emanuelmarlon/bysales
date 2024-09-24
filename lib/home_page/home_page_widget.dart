@@ -170,16 +170,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             fontWeight: FontWeight.w600,
                           ),
                     ),
-                    Slider(
-                      activeColor: FlutterFlowTheme.of(context).primary,
-                      inactiveColor: FlutterFlowTheme.of(context).alternate,
-                      min: 0.0,
-                      max: 1.0,
-                      value: _model.sliderVolumeValue ??= 0.5,
-                      onChanged: (newValue) {
-                        newValue = double.parse(newValue.toStringAsFixed(2));
-                        safeSetState(() => _model.sliderVolumeValue = newValue);
-                      },
+                    SliderTheme(
+                      data: const SliderThemeData(
+                        showValueIndicator: ShowValueIndicator.always,
+                      ),
+                      child: Slider(
+                        activeColor: FlutterFlowTheme.of(context).primary,
+                        inactiveColor: FlutterFlowTheme.of(context).alternate,
+                        min: 0.0,
+                        max: 1.0,
+                        value: _model.sliderVolumeValue ??= 0.5,
+                        label: _model.sliderVolumeValue?.toStringAsFixed(2),
+                        onChanged: (newValue) {
+                          newValue = double.parse(newValue.toStringAsFixed(2));
+                          safeSetState(
+                              () => _model.sliderVolumeValue = newValue);
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -193,7 +200,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     Expanded(
                       child: FlutterFlowDropDown<String>(
                         controller: _model.dropDownValueController ??=
-                            FormFieldController<String>(null),
+                            FormFieldController<String>(
+                          _model.dropDownValue ??= 'Audio 1',
+                        ),
                         options: const ['Audio 1', 'Audio 2', 'Audio 3'],
                         onChanged: (val) =>
                             safeSetState(() => _model.dropDownValue = val),
@@ -346,7 +355,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   return 'assets/alarm.mp3';
                                 }
                               }(),
-                              'assets/audios/alarm.mp3',
+                              'assets/alarm.mp3',
                             ),
                           );
                           ScaffoldMessenger.of(context).clearSnackBars();
