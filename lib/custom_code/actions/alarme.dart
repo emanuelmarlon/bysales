@@ -18,12 +18,16 @@ class AlarmStorage {
   }
 }
 
-// Função para agendar um alarme com data, id, título e corpo da notificação como parâmetros
+// Função para agendar um alarme com data, id, título, corpo da notificação, loop de áudio, vibração, volume e caminho do áudio como parâmetros
 Future<void> alarme(
   DateTime data,
   int id,
   String titulo,
   String notificationbody,
+  bool loopAudio,
+  bool vibrate,
+  double volume,
+  String assetAudio,
 ) async {
   // Inicializa o Alarm service
   await Alarm.init();
@@ -33,9 +37,10 @@ Future<void> alarme(
     id: id, // Utiliza o id fornecido como identificador do alarme
     dateTime: data, // Utiliza a data fornecida como horário do alarme
     assetAudioPath:
-        'assets/audios/alarm.mp3', // Caminho do arquivo de áudio para o alarme (opcional)
-    loopAudio: false,
-    vibrate: true,
+        assetAudio, // Caminho do arquivo de áudio para o alarme fornecido como parâmetro
+    loopAudio: loopAudio, // Define se o áudio deve repetir
+    vibrate: vibrate, // Define se o alarme deve vibrar
+    volume: volume, // Define o volume do alarme
     notificationTitle: titulo, // Utiliza o título fornecido para a notificação
     notificationBody:
         notificationbody, // Utiliza o corpo da notificação fornecido
@@ -56,13 +61,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AlarmStorage.init();
 
-  // Exemplo de chamada da função com data, id, título e notificationbody como parâmetros
+  // Exemplo de chamada da função com data, id, título, notificationbody, loopAudio, vibrate, volume e caminho do áudio como parâmetros
   DateTime alarmeData = DateTime.now().add(const Duration(seconds: 10));
   await alarme(
     alarmeData, // Data do alarme
     1, // ID do alarme
     'Lembrete', // Título do alarme
     'É hora de fazer uma pausa!', // Corpo da notificação
+    true, // loopAudio: Áudio será repetido
+    true, // vibrate: Dispositivo irá vibrar
+    0.5, // volume: Volume do alarme (de 0.0 a 1.0)
+    'assets/audios/alarm.mp3', // Caminho do arquivo de áudio personalizado
   );
 
   runApp(MyApp());
