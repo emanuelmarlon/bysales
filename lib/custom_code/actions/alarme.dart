@@ -18,20 +18,20 @@ class AlarmStorage {
   }
 }
 
-Future<void> alarme() async {
+// Função para agendar um alarme com data e id como parâmetros
+Future<void> alarme(
+  DateTime data,
+  int id,
+) async {
   // Inicializa o Alarm service
   await Alarm.init();
 
-  // Defina as configurações do alarme
-  DateTime alarmTime = DateTime.now()
-      .add(const Duration(seconds: 10)); // Defina o horário do alarme
-
-  // Configurações do alarme
+  // Defina as configurações do alarme usando os parâmetros fornecidos
   AlarmSettings alarmSettings = AlarmSettings(
-    id: 1,
-    dateTime: alarmTime,
+    id: id, // Utiliza o id fornecido como identificador do alarme
+    dateTime: data, // Utiliza a data fornecida como horário do alarme
     assetAudioPath:
-        'assets/audios/alarme.mp3', // Mantém vazio para usar o som padrão
+        'assets/alarm.mp3', // Caminho do arquivo de áudio para o alarme
     loopAudio: false,
     vibrate: true,
     notificationTitle: 'Alarme',
@@ -43,7 +43,7 @@ Future<void> alarme() async {
   // Agendar o alarme usando as configurações criadas
   try {
     await Alarm.set(alarmSettings: alarmSettings);
-    print('Alarme agendado com sucesso');
+    print('Alarme agendado com sucesso para $data com id $id');
   } catch (e) {
     print('Erro ao agendar o alarme: $e');
   }
@@ -52,26 +52,27 @@ Future<void> alarme() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AlarmStorage.init();
-  await alarme(); // Chama a função sem passar parâmetros
+
+  // Exemplo de chamada da função com data e id como parâmetros
+  DateTime alarmeData = DateTime.now().add(const Duration(seconds: 10));
+  await alarme(
+      alarmeData, 1); // Chamando a função passando a data e o id do alarme
 
   runApp(MyApp());
 }
 
-// Definindo a classe MyApp
+// Widget básico para iniciar o app
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Alarm Test',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Alarm App',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Alarm Test App'),
+          title: const Text('Alarm App'),
         ),
         body: const Center(
-          child: Text('Alarme agendado!'),
+          child: Text('Alarme agendado com sucesso!'),
         ),
       ),
     );

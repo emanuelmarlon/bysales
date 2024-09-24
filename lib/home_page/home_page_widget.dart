@@ -65,11 +65,122 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Text(
+                      'Data e hora',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Inter',
+                            fontSize: 24.0,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     FFButtonWidget(
                       onPressed: () async {
-                        await actions.alarme();
+                        final datePickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: getCurrentTimestamp,
+                          firstDate: getCurrentTimestamp,
+                          lastDate: DateTime(2050),
+                          builder: (context, child) {
+                            return wrapInMaterialDatePickerTheme(
+                              context,
+                              child!,
+                              headerBackgroundColor:
+                                  FlutterFlowTheme.of(context).primary,
+                              headerForegroundColor:
+                                  FlutterFlowTheme.of(context).info,
+                              headerTextStyle: FlutterFlowTheme.of(context)
+                                  .headlineLarge
+                                  .override(
+                                    fontFamily: 'Inter Tight',
+                                    fontSize: 32.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                              pickerBackgroundColor:
+                                  FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                              pickerForegroundColor:
+                                  FlutterFlowTheme.of(context).primaryText,
+                              selectedDateTimeBackgroundColor:
+                                  FlutterFlowTheme.of(context).primary,
+                              selectedDateTimeForegroundColor:
+                                  FlutterFlowTheme.of(context).info,
+                              actionButtonForegroundColor:
+                                  FlutterFlowTheme.of(context).primaryText,
+                              iconSize: 24.0,
+                            );
+                          },
+                        );
+
+                        TimeOfDay? datePickedTime;
+                        if (datePickedDate != null) {
+                          datePickedTime = await showTimePicker(
+                            context: context,
+                            initialTime:
+                                TimeOfDay.fromDateTime(getCurrentTimestamp),
+                            builder: (context, child) {
+                              return wrapInMaterialTimePickerTheme(
+                                context,
+                                child!,
+                                headerBackgroundColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                headerForegroundColor:
+                                    FlutterFlowTheme.of(context).info,
+                                headerTextStyle: FlutterFlowTheme.of(context)
+                                    .headlineLarge
+                                    .override(
+                                      fontFamily: 'Inter Tight',
+                                      fontSize: 32.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                pickerBackgroundColor:
+                                    FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                pickerForegroundColor:
+                                    FlutterFlowTheme.of(context).primaryText,
+                                selectedDateTimeBackgroundColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                selectedDateTimeForegroundColor:
+                                    FlutterFlowTheme.of(context).info,
+                                actionButtonForegroundColor:
+                                    FlutterFlowTheme.of(context).primaryText,
+                                iconSize: 24.0,
+                              );
+                            },
+                          );
+                        }
+
+                        if (datePickedDate != null &&
+                            datePickedTime != null) {
+                          safeSetState(() {
+                            _model.datePicked = DateTime(
+                              datePickedDate.year,
+                              datePickedDate.month,
+                              datePickedDate.day,
+                              datePickedTime!.hour,
+                              datePickedTime.minute,
+                            );
+                          });
+                        }
+                        _model.data = _model.datePicked;
+                        safeSetState(() {});
+                        await actions.alarme(
+                          _model.data!,
+                          1,
+                        );
                       },
-                      text: 'agendar alarme',
+                      text: 'Agendar alarme',
                       options: FFButtonOptions(
                         height: 40.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
