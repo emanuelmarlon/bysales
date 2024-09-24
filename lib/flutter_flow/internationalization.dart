@@ -1452,12 +1452,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'pt': 'Agendar',
       'en': '',
     },
-    '24mi1b92': {
-      'pt': 'Agendar 2',
-      'en': '',
-    },
     'he0nma87': {
       'pt': 'Agendar 3',
+      'en': '',
+    },
+    'ihiuacbp': {
+      'pt': 'Voltar',
       'en': '',
     },
     '9ezn7dcc': {

@@ -210,13 +210,13 @@ class _TestevideoWidgetState extends State<TestevideoWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
-                                await actions.alarme(
+                                await actions.newCustomAction(
                                   functions.dataCom20SegundosAmais(
                                       getCurrentTimestamp),
                                 );
                               },
                               text: FFLocalizations.of(context).getText(
-                                '24mi1b92' /* Agendar 2 */,
+                                'he0nma87' /* Agendar 3 */,
                               ),
                               options: FFButtonOptions(
                                 width: 300.0,
@@ -249,13 +249,10 @@ class _TestevideoWidgetState extends State<TestevideoWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
-                                await actions.newCustomAction(
-                                  functions.dataCom20SegundosAmais(
-                                      getCurrentTimestamp),
-                                );
+                                context.safePop();
                               },
                               text: FFLocalizations.of(context).getText(
-                                'he0nma87' /* Agendar 3 */,
+                                'ihiuacbp' /* Voltar */,
                               ),
                               options: FFButtonOptions(
                                 width: 300.0,
@@ -278,10 +275,6 @@ class _TestevideoWidgetState extends State<TestevideoWidget> {
                             ),
                           ],
                         ),
-                      ),
-                      const Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [],
                       ),
                     ],
                   ),
