@@ -1456,6 +1456,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'pt': 'Agendar 3',
       'en': '',
     },
+    'zagui17a': {
+      'pt': 'Agendar alarme',
+      'en': '',
+    },
     'ihiuacbp': {
       'pt': 'Voltar',
       'en': '',
