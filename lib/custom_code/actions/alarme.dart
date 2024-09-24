@@ -18,24 +18,61 @@ class AlarmStorage {
   }
 }
 
-Future alarme(DateTime data) async {
-  // Add your function code here!
-  await AlarmStorage.init();
+Future<void> alarme() async {
+  // Inicializa o Alarm service
+  await Alarm.init();
 
-  // Defina as configurações do alarme com os parâmetros obrigatórios
-  DateTime alarmTime = DateTime.now().add(const Duration(seconds: 10));
+  // Defina as configurações do alarme
+  DateTime alarmTime = DateTime.now()
+      .add(const Duration(seconds: 10)); // Defina o horário do alarme
 
   // Configurações do alarme
   AlarmSettings alarmSettings = AlarmSettings(
-    id: 1, // Um ID único para identificar o alarme
-    dateTime: alarmTime, // O horário que o alarme deve tocar
-    assetAudioPath: '', // Deixe vazio para usar o som padrão
-    notificationTitle: 'Alarme', // Título da notificação quando o alarme toca
-    notificationBody: 'Seu alarme está tocando', // Corpo da notificação
-    loopAudio: true, // O som do alarme tocará em loop até ser interrompido
-    vibrate: true, // Habilita a vibração quando o alarme toca
+    id: 1,
+    dateTime: alarmTime,
+    assetAudioPath: '', // Mantém vazio para usar o som padrão
+    loopAudio: false,
+    vibrate: true,
+    notificationTitle: 'Alarme',
+    notificationBody: 'Seu alarme está tocando',
+    enableNotificationOnKill: true,
+    androidFullScreenIntent: true,
   );
 
   // Agendar o alarme usando as configurações criadas
-  await Alarm.set(alarmSettings: alarmSettings);
+  try {
+    await Alarm.set(alarmSettings: alarmSettings);
+    print('Alarme agendado com sucesso');
+  } catch (e) {
+    print('Erro ao agendar o alarme: $e');
+  }
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AlarmStorage.init();
+  await alarme(); // Chama a função sem passar parâmetros
+
+  runApp(MyApp());
+}
+
+// Definindo a classe MyApp
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Alarm Test',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Alarm Test App'),
+        ),
+        body: const Center(
+          child: Text('Alarme agendado!'),
+        ),
+      ),
+    );
+  }
 }

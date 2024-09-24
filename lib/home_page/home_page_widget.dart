@@ -67,9 +67,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     FFButtonWidget(
                       onPressed: () async {
-                        await actions.alarme(
-                          getCurrentTimestamp,
-                        );
+                        await actions.alarme();
                       },
                       text: 'agendar alarme',
                       options: FFButtonOptions(
