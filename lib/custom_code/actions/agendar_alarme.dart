@@ -9,72 +9,46 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'dart:isolate';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
-void main() async {
-  // Inicializar o Android Alarm Manager
-  WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
+Future<void> agendarAlarme(DateTime data) async {
+  // Inicializa o plugin de notificações
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-  runApp(MyApp());
-}
+  // Configuração da inicialização
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
 
-// Definição básica do MyApp
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Alarme Teste',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+  // Corrigido para usar argumentos nomeados
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // Converte a data/hora para o formato adequado
+  final tz.TZDateTime scheduledDate = tz.TZDateTime.from(data, tz.local);
+
+  // Agenda a notificação
+  await flutterLocalNotificationsPlugin.zonedSchedule(
+    0, // ID da notificação
+    'Alarme', // Título
+    'Alarm is ringing at ${data.hour}:${data.minute}!', // Mensagem
+    scheduledDate,
+    const NotificationDetails(
+      android: AndroidNotificationDetails(
+        'your_channel_id', // ID do canal
+        'your_channel_name', // Nome do canal
+        channelDescription: 'description', // Descrição do canal
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
       ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-// Página inicial básica
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Teste de Alarme'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Chamar a função de agendamento do alarme
-            agendarAlarme(DateTime.now());
-          },
-          child: Text('Agendar Alarme'),
-        ),
-      ),
-    );
-  }
-}
-
-// Função que será chamada pelo alarme
-void callback() {
-  print('Alarme disparado!');
-}
-
-Future agendarAlarme(DateTime data) async {
-  // Add your function code here!
-  int alarmId = 0; // ID único para o alarme
-
-  // Agendar o alarme
-  await AndroidAlarmManager.oneShot(
-    const Duration(seconds: 10), // Duração até disparar o alarme (10 segundos)
-    alarmId, // ID do alarme
-    callback, // Função a ser chamada quando o alarme disparar
-    exact: true,
-    wakeup: true,
+    ),
+    androidScheduleMode: AndroidScheduleMode.exact,
+    uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
   );
 }
