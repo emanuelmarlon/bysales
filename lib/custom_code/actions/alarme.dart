@@ -30,7 +30,8 @@ Future<void> alarme() async {
   AlarmSettings alarmSettings = AlarmSettings(
     id: 1,
     dateTime: alarmTime,
-    assetAudioPath: '', // Mantém vazio para usar o som padrão
+    assetAudioPath:
+        'assets/audios/alarme.mp3', // Mantém vazio para usar o som padrão
     loopAudio: false,
     vibrate: true,
     notificationTitle: 'Alarme',
