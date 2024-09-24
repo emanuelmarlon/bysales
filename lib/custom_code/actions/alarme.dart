@@ -12,15 +12,18 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> initializePrefs() async {
-  // Inicialize o SharedPreferences, se necessário
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  // Outras inicializações, se aplicáveis
+class AlarmStorage {
+  static late SharedPreferences prefs;
+
+  // Inicializa o SharedPreferences
+  static Future<void> init() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 }
 
 Future<void> alarme(DateTime data) async {
   // Certifique-se de que tudo está inicializado
-  await initializePrefs();
+  await AlarmStorage.init();
 
   // Defina as configurações do alarme com os parâmetros obrigatórios
   DateTime alarmTime = DateTime.now().add(const Duration(seconds: 10));
