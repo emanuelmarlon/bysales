@@ -67,7 +67,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     Text(
                       valueOrDefault<String>(
-                        _model.data?.toString(),
+                        dateTimeFormat(
+                          "dd/MM/yyyy HH:mm",
+                          _model.data,
+                          locale: FFLocalizations.of(context).languageCode,
+                        ),
                         'Data e hora',
                       ),
                       style: FlutterFlowTheme.of(context).bodyMedium.override(

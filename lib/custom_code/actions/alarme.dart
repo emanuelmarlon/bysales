@@ -33,7 +33,7 @@ Future<void> alarme(
     id: id, // Utiliza o id fornecido como identificador do alarme
     dateTime: data, // Utiliza a data fornecida como horário do alarme
     assetAudioPath:
-        'assets/alarm.mp3', // Caminho do arquivo de áudio para o alarme (opcional)
+        'assets/audios/alarm.mp3', // Caminho do arquivo de áudio para o alarme (opcional)
     loopAudio: false,
     vibrate: true,
     notificationTitle: titulo, // Utiliza o título fornecido para a notificação
