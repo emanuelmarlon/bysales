@@ -10,9 +10,17 @@ import 'package:flutter/material.dart';
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 Future<void> agendarAlarme(DateTime data) async {
+  // Inicializa o banco de dados de fusos horários
+  tz.initializeTimeZones();
+
+  // Configura o fuso horário local (ajuste para sua localização)
+  tz.setLocalLocation(
+      tz.getLocation('America/Sao_Paulo')); // Altere conforme necessário
+
   // Inicializa o plugin de notificações
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -21,14 +29,13 @@ Future<void> agendarAlarme(DateTime data) async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
 
-  // Corrigido para usar argumentos nomeados
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-  // Converte a data/hora para o formato adequado
+  // Converte a data/hora para o formato adequado usando o fuso horário local
   final tz.TZDateTime scheduledDate = tz.TZDateTime.from(data, tz.local);
 
   // Agenda a notificação

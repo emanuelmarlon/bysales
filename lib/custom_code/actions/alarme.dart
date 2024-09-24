@@ -10,8 +10,18 @@ import 'package:flutter/material.dart';
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 import 'package:alarm/alarm.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> initializePrefs() async {
+  // Inicialize o SharedPreferences, se necessário
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Outras inicializações, se aplicáveis
+}
 
 Future<void> alarme(DateTime data) async {
+  // Certifique-se de que tudo está inicializado
+  await initializePrefs();
+
   // Defina as configurações do alarme com os parâmetros obrigatórios
   DateTime alarmTime = DateTime.now().add(const Duration(seconds: 10));
 
