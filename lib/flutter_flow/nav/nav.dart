@@ -2,14 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/backend/backend.dart';
 
-import '/auth/base_auth_user_provider.dart';
-
-import '/backend/push_notifications/push_notifications_handler.dart'
-    show PushNotificationsHandler;
 import '/index.dart';
-import '/main.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 export 'package:go_router/go_router.dart';
@@ -23,46 +17,7 @@ class AppStateNotifier extends ChangeNotifier {
   static AppStateNotifier? _instance;
   static AppStateNotifier get instance => _instance ??= AppStateNotifier._();
 
-  BaseAuthUser? initialUser;
-  BaseAuthUser? user;
   bool showSplashImage = true;
-  String? _redirectLocation;
-
-  /// Determines whether the app will refresh and build again when a sign
-  /// in or sign out happens. This is useful when the app is launched or
-  /// on an unexpected logout. However, this must be turned off when we
-  /// intend to sign in/out and then navigate or perform any actions after.
-  /// Otherwise, this will trigger a refresh and interrupt the action(s).
-  bool notifyOnAuthChange = true;
-
-  bool get loading => user == null || showSplashImage;
-  bool get loggedIn => user?.loggedIn ?? false;
-  bool get initiallyLoggedIn => initialUser?.loggedIn ?? false;
-  bool get shouldRedirect => loggedIn && _redirectLocation != null;
-
-  String getRedirectLocation() => _redirectLocation!;
-  bool hasRedirect() => _redirectLocation != null;
-  void setRedirectLocationIfUnset(String loc) => _redirectLocation ??= loc;
-  void clearRedirectLocation() => _redirectLocation = null;
-
-  /// Mark as not needing to notify on a sign in / out when we intend
-  /// to perform subsequent actions (such as navigation) afterwards.
-  void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
-
-  void update(BaseAuthUser newUser) {
-    final shouldUpdate =
-        user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
-    initialUser ??= newUser;
-    user = newUser;
-    // Refresh the app on auth change unless explicitly marked otherwise.
-    // No need to update unless the user has changed.
-    if (notifyOnAuthChange && shouldUpdate) {
-      notifyListeners();
-    }
-    // Once again mark the notifier as needing to update on auth change
-    // (in order to catch sign in / out events).
-    updateNotifyOnAuthChange(true);
-  }
 
   void stopShowingSplashImage() {
     showSplashImage = false;
@@ -74,304 +29,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
+      errorBuilder: (context, state) => const HomePageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
+          builder: (context, _) => const HomePageWidget(),
         ),
         FFRoute(
-          name: 'criaConta',
-          path: '/criaConta',
-          builder: (context, params) => CriaContaWidget(
-            usuario: params.getParam(
-              'usuario',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['users'],
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'empresa',
-          path: '/empresa',
-          asyncParams: {
-            'empresaDoc': getDoc(['empresas'], EmpresasRecord.fromSnapshot),
-          },
-          builder: (context, params) => EmpresaWidget(
-            empresa: params.getParam(
-              'empresa',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['empresas'],
-            ),
-            empresaDoc: params.getParam(
-              'empresaDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'home',
-          path: '/home',
-          builder: (context, params) =>
-              params.isEmpty ? const NavBarPage(initialPage: 'home') : const HomeWidget(),
-        ),
-        FFRoute(
-          name: 'login',
-          path: '/login',
-          builder: (context, params) => const LoginWidget(),
-        ),
-        FFRoute(
-          name: 'empresasCadastradas',
-          path: '/empresasCadastradas',
-          builder: (context, params) => params.isEmpty
-              ? const NavBarPage(initialPage: 'empresasCadastradas')
-              : const EmpresasCadastradasWidget(),
-        ),
-        FFRoute(
-          name: 'usuariosCadastrados',
-          path: '/usuariosCadastrados',
-          builder: (context, params) => const UsuariosCadastradosWidget(),
-        ),
-        FFRoute(
-          name: 'usuario',
-          path: '/usuario',
-          asyncParams: {
-            'usuarioDoc': getDoc(['users'], UsersRecord.fromSnapshot),
-          },
-          builder: (context, params) => UsuarioWidget(
-            usuario: params.getParam(
-              'usuario',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['users'],
-            ),
-            usuarioDoc: params.getParam(
-              'usuarioDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'editarEmpresa',
-          path: '/editarEmpresa',
-          asyncParams: {
-            'empresaDoc': getDoc(['empresas'], EmpresasRecord.fromSnapshot),
-          },
-          builder: (context, params) => EditarEmpresaWidget(
-            empresa: params.getParam(
-              'empresa',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['empresas'],
-            ),
-            empresaDoc: params.getParam(
-              'empresaDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'editarUsuario',
-          path: '/editarUsuario',
-          asyncParams: {
-            'usuarioDoc': getDoc(['users'], UsersRecord.fromSnapshot),
-          },
-          builder: (context, params) => EditarUsuarioWidget(
-            usuario: params.getParam(
-              'usuario',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['users'],
-            ),
-            usuarioDoc: params.getParam(
-              'usuarioDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'clientesCadastrados',
-          path: '/clientesCadastrados',
-          builder: (context, params) => params.isEmpty
-              ? const NavBarPage(initialPage: 'clientesCadastrados')
-              : const ClientesCadastradosWidget(),
-        ),
-        FFRoute(
-          name: 'cliente',
-          path: '/cliente',
-          asyncParams: {
-            'clienteDoc': getDoc(['clientes'], ClientesRecord.fromSnapshot),
-          },
-          builder: (context, params) => ClienteWidget(
-            cliente: params.getParam(
-              'cliente',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['clientes'],
-            ),
-            clienteDoc: params.getParam(
-              'clienteDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'editarCliente',
-          path: '/editarCliente',
-          asyncParams: {
-            'clienteDoc': getDoc(['clientes'], ClientesRecord.fromSnapshot),
-          },
-          builder: (context, params) => EditarClienteWidget(
-            cliente: params.getParam(
-              'cliente',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['clientes'],
-            ),
-            clienteDoc: params.getParam(
-              'clienteDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'cadastrarCliente',
-          path: '/cadastrarCliente',
-          builder: (context, params) => const CadastrarClienteWidget(),
-        ),
-        FFRoute(
-          name: 'produtosCadastrados',
-          path: '/produtosCadastrados',
-          builder: (context, params) => params.isEmpty
-              ? const NavBarPage(initialPage: 'produtosCadastrados')
-              : const ProdutosCadastradosWidget(),
-        ),
-        FFRoute(
-          name: 'editarProdutoC',
-          path: '/editarProdutoC',
-          asyncParams: {
-            'produtoDoc': getDoc(['produtos'], ProdutosRecord.fromSnapshot),
-          },
-          builder: (context, params) => EditarProdutoCWidget(
-            produto: params.getParam(
-              'produto',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['produtos'],
-            ),
-            produtoDoc: params.getParam(
-              'produtoDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'cadastrarProduto',
-          path: '/cadastrarProduto',
-          builder: (context, params) => const CadastrarProdutoWidget(),
-        ),
-        FFRoute(
-          name: 'pedidos',
-          path: '/pedidos',
-          builder: (context, params) => params.isEmpty
-              ? const NavBarPage(initialPage: 'pedidos')
-              : const PedidosWidget(),
-        ),
-        FFRoute(
-          name: 'clientesCadastradosPedido',
-          path: '/clientesCadastradosPedido',
-          builder: (context, params) => const ClientesCadastradosPedidoWidget(),
-        ),
-        FFRoute(
-          name: 'novoOrcamento',
-          path: '/novoOrcamento',
-          builder: (context, params) => NovoOrcamentoWidget(
-            pedido: params.getParam(
-              'pedido',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['pedidos'],
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'cadastrarSituacoes',
-          path: '/cadastrarSituacoes',
-          builder: (context, params) => const CadastrarSituacoesWidget(),
-        ),
-        FFRoute(
-          name: 'catalogo',
-          path: '/catalogo',
-          asyncParams: {
-            'pedidoDoc': getDoc(['pedidos'], PedidosRecord.fromSnapshot),
-          },
-          builder: (context, params) => CatalogoWidget(
-            pedido: params.getParam(
-              'pedido',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['pedidos'],
-            ),
-            pedidoDoc: params.getParam(
-              'pedidoDoc',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'alterarSituacaoPedido',
-          path: '/alterarSituacaoPedido',
-          builder: (context, params) => AlterarSituacaoPedidoWidget(
-            pedido: params.getParam(
-              'pedido',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['pedidos'],
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'cadastrarFormaPagamento',
-          path: '/cadastrarFormaPagamento',
-          builder: (context, params) => const CadastrarFormaPagamentoWidget(),
-        ),
-        FFRoute(
-          name: 'importacoes',
-          path: '/importacoes',
-          builder: (context, params) => const ImportacoesWidget(),
-        ),
-        FFRoute(
-          name: 'promocoes',
-          path: '/promocoes',
-          asyncParams: {
-            'produto': getDoc(['produtos'], ProdutosRecord.fromSnapshot),
-          },
-          builder: (context, params) => PromocoesWidget(
-            produto: params.getParam(
-              'produto',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'notificacoes',
-          path: '/notificacoes',
-          builder: (context, params) => const NotificacoesWidget(),
-        ),
-        FFRoute(
-          name: 'pagamentos',
-          path: '/pagamentos',
-          builder: (context, params) => const PagamentosWidget(),
-        ),
-        FFRoute(
-          name: 'testevideo',
-          path: '/testevideo',
-          builder: (context, params) => const TestevideoWidget(),
+          name: 'HomePage',
+          path: '/homePage',
+          builder: (context, params) => const HomePageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -385,40 +53,6 @@ extension NavParamExtensions on Map<String, String?> {
 }
 
 extension NavigationExtensions on BuildContext {
-  void goNamedAuth(
-    String name,
-    bool mounted, {
-    Map<String, String> pathParameters = const <String, String>{},
-    Map<String, String> queryParameters = const <String, String>{},
-    Object? extra,
-    bool ignoreRedirect = false,
-  }) =>
-      !mounted || GoRouter.of(this).shouldRedirect(ignoreRedirect)
-          ? null
-          : goNamed(
-              name,
-              pathParameters: pathParameters,
-              queryParameters: queryParameters,
-              extra: extra,
-            );
-
-  void pushNamedAuth(
-    String name,
-    bool mounted, {
-    Map<String, String> pathParameters = const <String, String>{},
-    Map<String, String> queryParameters = const <String, String>{},
-    Object? extra,
-    bool ignoreRedirect = false,
-  }) =>
-      !mounted || GoRouter.of(this).shouldRedirect(ignoreRedirect)
-          ? null
-          : pushNamed(
-              name,
-              pathParameters: pathParameters,
-              queryParameters: queryParameters,
-              extra: extra,
-            );
-
   void safePop() {
     // If there is only one route on the stack, navigate to the initial
     // page instead of popping.
@@ -428,19 +62,6 @@ extension NavigationExtensions on BuildContext {
       go('/');
     }
   }
-}
-
-extension GoRouterExtensions on GoRouter {
-  AppStateNotifier get appState => AppStateNotifier.instance;
-  void prepareAuthEvent([bool ignoreRedirect = false]) =>
-      appState.hasRedirect() && !ignoreRedirect
-          ? null
-          : appState.updateNotifyOnAuthChange(false);
-  bool shouldRedirect(bool ignoreRedirect) =>
-      !ignoreRedirect && appState.hasRedirect();
-  void clearRedirectLocation() => appState.clearRedirectLocation();
-  void setRedirectLocationIfUnset(String location) =>
-      appState.updateNotifyOnAuthChange(false);
 }
 
 extension _GoRouterStateExtensions on GoRouterState {
@@ -490,8 +111,6 @@ class FFParameters {
     String paramName,
     ParamType type, {
     bool isList = false,
-    List<String>? collectionNamePath,
-    StructBuilder<T>? structBuilder,
   }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
@@ -509,8 +128,6 @@ class FFParameters {
       param,
       type,
       isList,
-      collectionNamePath: collectionNamePath,
-      structBuilder: structBuilder,
     );
   }
 }
@@ -535,19 +152,6 @@ class FFRoute {
   GoRoute toRoute(AppStateNotifier appStateNotifier) => GoRoute(
         name: name,
         path: path,
-        redirect: (context, state) {
-          if (appStateNotifier.shouldRedirect) {
-            final redirectLocation = appStateNotifier.getRedirectLocation();
-            appStateNotifier.clearRedirectLocation();
-            return redirectLocation;
-          }
-
-          if (requireAuth && !appStateNotifier.loggedIn) {
-            appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/login';
-          }
-          return null;
-        },
         pageBuilder: (context, state) {
           fixStatusBarOniOS16AndBelow(context);
           final ffParams = FFParameters(state, asyncParams);
@@ -557,18 +161,7 @@ class FFRoute {
                   builder: (context, _) => builder(context, ffParams),
                 )
               : builder(context, ffParams);
-          final child = appStateNotifier.loading
-              ? Container(
-                  color: const Color(0xFF337BB8),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/images/dc42af2f-6b39-4f92-a6fc-61e00e75b656.png',
-                      width: 130.0,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                )
-              : PushNotificationsHandler(child: page);
+          final child = page;
 
           final transitionInfo = state.transitionInfo;
           return transitionInfo.hasTransition
