@@ -125,36 +125,44 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Loop de Audio',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Inter',
-                            fontSize: 24.0,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    Switch.adaptive(
-                      value: _model.switchAudioValue!,
-                      onChanged: (newValue) async {
-                        safeSetState(() => _model.switchAudioValue = newValue);
-                      },
-                      activeColor: FlutterFlowTheme.of(context).primary,
-                      activeTrackColor: FlutterFlowTheme.of(context).primary,
-                      inactiveTrackColor:
-                          FlutterFlowTheme.of(context).alternate,
-                      inactiveThumbColor:
-                          FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                  ],
+              if (responsiveVisibility(
+                context: context,
+                phone: false,
+                tablet: false,
+                tabletLandscape: false,
+                desktop: false,
+              ))
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Loop de Audio',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Inter',
+                              fontSize: 24.0,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      Switch.adaptive(
+                        value: _model.switchAudioValue!,
+                        onChanged: (newValue) async {
+                          safeSetState(
+                              () => _model.switchAudioValue = newValue);
+                        },
+                        activeColor: FlutterFlowTheme.of(context).primary,
+                        activeTrackColor: FlutterFlowTheme.of(context).primary,
+                        inactiveTrackColor:
+                            FlutterFlowTheme.of(context).alternate,
+                        inactiveThumbColor:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                 child: Row(
@@ -200,9 +208,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     Expanded(
                       child: FlutterFlowDropDown<String>(
                         controller: _model.dropDownValueController ??=
-                            FormFieldController<String>(
-                          _model.dropDownValue ??= 'Audio 1',
-                        ),
+                            FormFieldController<String>(null),
                         options: const ['Audio 1', 'Audio 2', 'Audio 3'],
                         onChanged: (val) =>
                             safeSetState(() => _model.dropDownValue = val),
@@ -346,16 +352,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             valueOrDefault<String>(
                               () {
                                 if (_model.dropDownValue == 'Audio 1') {
-                                  return 'assets/alarm.mp3';
+                                  return 'assets/audios/alarm.mp3';
                                 } else if (_model.dropDownValue == 'Audio 2') {
-                                  return 'assets/alarm1.mp3';
+                                  return 'assets/audios/alarm1.mp3';
                                 } else if (_model.dropDownValue == 'Audio 3') {
-                                  return 'assets/alarm2.mp3';
+                                  return 'assets/audios/alarm2.mp3';
                                 } else {
-                                  return 'assets/alarm.mp3';
+                                  return 'assets/audios/alarm.mp3';
                                 }
                               }(),
-                              'assets/alarm.mp3',
+                              'assets/audios/alarm.mp3',
                             ),
                           );
                           ScaffoldMessenger.of(context).clearSnackBars();
