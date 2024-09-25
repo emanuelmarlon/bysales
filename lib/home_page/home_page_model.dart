@@ -8,6 +8,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   DateTime? data;
 
+  int? id;
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for SwitchVibrar widget.

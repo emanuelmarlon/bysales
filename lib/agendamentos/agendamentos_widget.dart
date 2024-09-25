@@ -1,6 +1,7 @@
 import '/components/emp_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -164,11 +165,25 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                         ),
                                       ],
                                     ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 36.0,
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        await actions.pararalarme(
+                                          valueOrDefault<int>(
+                                            agendamentosItem.id,
+                                            1,
+                                          ),
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.stop,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 36.0,
+                                      ),
                                     ),
                                   ],
                                 ),

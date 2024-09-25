@@ -13,12 +13,14 @@ class AlarmeStruct extends BaseStruct {
     bool? vibrar,
     double? volume,
     bool? loop,
+    int? id,
   })  : _data = data,
         _titulo = titulo,
         _mensagem = mensagem,
         _vibrar = vibrar,
         _volume = volume,
-        _loop = loop;
+        _loop = loop,
+        _id = id;
 
   // "data" field.
   DateTime? _data;
@@ -64,6 +66,15 @@ class AlarmeStruct extends BaseStruct {
 
   bool hasLoop() => _loop != null;
 
+  // "id" field.
+  int? _id;
+  int get id => _id ?? 0;
+  set id(int? val) => _id = val;
+
+  void incrementId(int amount) => id = id + amount;
+
+  bool hasId() => _id != null;
+
   static AlarmeStruct fromMap(Map<String, dynamic> data) => AlarmeStruct(
         data: data['data'] as DateTime?,
         titulo: data['titulo'] as String?,
@@ -71,6 +82,7 @@ class AlarmeStruct extends BaseStruct {
         vibrar: data['vibrar'] as bool?,
         volume: castToType<double>(data['volume']),
         loop: data['loop'] as bool?,
+        id: castToType<int>(data['id']),
       );
 
   static AlarmeStruct? maybeFromMap(dynamic data) =>
@@ -83,6 +95,7 @@ class AlarmeStruct extends BaseStruct {
         'vibrar': _vibrar,
         'volume': _volume,
         'loop': _loop,
+        'id': _id,
       }.withoutNulls;
 
   @override
@@ -110,6 +123,10 @@ class AlarmeStruct extends BaseStruct {
         'loop': serializeParam(
           _loop,
           ParamType.bool,
+        ),
+        'id': serializeParam(
+          _id,
+          ParamType.int,
         ),
       }.withoutNulls;
 
@@ -145,6 +162,11 @@ class AlarmeStruct extends BaseStruct {
           ParamType.bool,
           false,
         ),
+        id: deserializeParam(
+          data['id'],
+          ParamType.int,
+          false,
+        ),
       );
 
   @override
@@ -158,12 +180,13 @@ class AlarmeStruct extends BaseStruct {
         mensagem == other.mensagem &&
         vibrar == other.vibrar &&
         volume == other.volume &&
-        loop == other.loop;
+        loop == other.loop &&
+        id == other.id;
   }
 
   @override
-  int get hashCode =>
-      const ListEquality().hash([data, titulo, mensagem, vibrar, volume, loop]);
+  int get hashCode => const ListEquality()
+      .hash([data, titulo, mensagem, vibrar, volume, loop, id]);
 }
 
 AlarmeStruct createAlarmeStruct({
@@ -173,6 +196,7 @@ AlarmeStruct createAlarmeStruct({
   bool? vibrar,
   double? volume,
   bool? loop,
+  int? id,
 }) =>
     AlarmeStruct(
       data: data,
@@ -181,4 +205,5 @@ AlarmeStruct createAlarmeStruct({
       vibrar: vibrar,
       volume: volume,
       loop: loop,
+      id: id,
     );

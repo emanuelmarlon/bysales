@@ -524,10 +524,31 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             }
                             _model.data = _model.datePicked;
                             safeSetState(() {});
+                            _model.id = valueOrDefault<int>(
+                              random_data.randomInteger(1, 9999999999999),
+                              1,
+                            );
+                            safeSetState(() {});
+                            FFAppState().addToAlarme(AlarmeStruct(
+                              data: _model.datePicked,
+                              titulo: valueOrDefault<String>(
+                                _model.textController1.text,
+                                'Alarme',
+                              ),
+                              mensagem: valueOrDefault<String>(
+                                _model.textController2.text,
+                                'Disparando alarme.',
+                              ),
+                              vibrar: _model.switchVibrarValue,
+                              volume: _model.sliderVolumeValue,
+                              loop: _model.switchAudioValue,
+                              id: _model.id,
+                            ));
+                            safeSetState(() {});
                             await actions.alarme(
                               _model.data!,
                               valueOrDefault<int>(
-                                random_data.randomInteger(1, 2000000000),
+                                _model.id,
                                 1,
                               ),
                               valueOrDefault<String>(
@@ -558,21 +579,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 'assets/audios/alarm.mp3',
                               ),
                             );
-                            FFAppState().addToAlarme(AlarmeStruct(
-                              data: _model.datePicked,
-                              titulo: valueOrDefault<String>(
-                                _model.textController1.text,
-                                'Alarme',
-                              ),
-                              mensagem: valueOrDefault<String>(
-                                _model.textController2.text,
-                                'Disparando alarme.',
-                              ),
-                              vibrar: _model.switchVibrarValue,
-                              volume: _model.sliderVolumeValue,
-                              loop: _model.switchAudioValue,
-                            ));
-                            safeSetState(() {});
                             context.safePop();
                             ScaffoldMessenger.of(context).clearSnackBars();
                             ScaffoldMessenger.of(context).showSnackBar(
