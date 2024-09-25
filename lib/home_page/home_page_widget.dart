@@ -94,37 +94,44 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Vibrar',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Inter',
-                            fontSize: 24.0,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    Switch.adaptive(
-                      value: _model.switchVibrarValue!,
-                      onChanged: (newValue) async {
-                        safeSetState(
-                            () => _model.switchVibrarValue = newValue);
-                      },
-                      activeColor: FlutterFlowTheme.of(context).primary,
-                      activeTrackColor: FlutterFlowTheme.of(context).primary,
-                      inactiveTrackColor:
-                          FlutterFlowTheme.of(context).alternate,
-                      inactiveThumbColor:
-                          FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                  ],
+              if (responsiveVisibility(
+                context: context,
+                phone: false,
+                tablet: false,
+                tabletLandscape: false,
+                desktop: false,
+              ))
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Vibrar',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Inter',
+                              fontSize: 24.0,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      Switch.adaptive(
+                        value: _model.switchVibrarValue!,
+                        onChanged: (newValue) async {
+                          safeSetState(
+                              () => _model.switchVibrarValue = newValue);
+                        },
+                        activeColor: FlutterFlowTheme.of(context).primary,
+                        activeTrackColor: FlutterFlowTheme.of(context).primary,
+                        inactiveTrackColor:
+                            FlutterFlowTheme.of(context).alternate,
+                        inactiveThumbColor:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               if (responsiveVisibility(
                 context: context,
                 phone: false,
@@ -163,42 +170,50 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ],
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Volume',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Inter',
-                            fontSize: 24.0,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    SliderTheme(
-                      data: const SliderThemeData(
-                        showValueIndicator: ShowValueIndicator.always,
+              if (responsiveVisibility(
+                context: context,
+                phone: false,
+                tablet: false,
+                tabletLandscape: false,
+                desktop: false,
+              ))
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Volume',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Inter',
+                              fontSize: 24.0,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
-                      child: Slider(
-                        activeColor: FlutterFlowTheme.of(context).primary,
-                        inactiveColor: FlutterFlowTheme.of(context).alternate,
-                        min: 0.0,
-                        max: 1.0,
-                        value: _model.sliderVolumeValue ??= 0.5,
-                        label: _model.sliderVolumeValue?.toStringAsFixed(2),
-                        onChanged: (newValue) {
-                          newValue = double.parse(newValue.toStringAsFixed(2));
-                          safeSetState(
-                              () => _model.sliderVolumeValue = newValue);
-                        },
+                      SliderTheme(
+                        data: const SliderThemeData(
+                          showValueIndicator: ShowValueIndicator.always,
+                        ),
+                        child: Slider(
+                          activeColor: FlutterFlowTheme.of(context).primary,
+                          inactiveColor: FlutterFlowTheme.of(context).alternate,
+                          min: 0.0,
+                          max: 1.0,
+                          value: _model.sliderVolumeValue ??= 0.5,
+                          label: _model.sliderVolumeValue?.toStringAsFixed(2),
+                          onChanged: (newValue) {
+                            newValue =
+                                double.parse(newValue.toStringAsFixed(2));
+                            safeSetState(
+                                () => _model.sliderVolumeValue = newValue);
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                 child: Row(
@@ -347,8 +362,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             'Alarme do marcos',
                             'Escreva qualquer mensagem',
                             false,
-                            _model.switchVibrarValue!,
-                            _model.sliderVolumeValue!,
+                            true,
+                            1.0,
                             valueOrDefault<String>(
                               () {
                                 if (_model.dropDownValue == 'Audio 1') {
