@@ -148,20 +148,31 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                 letterSpacing: 0.0,
                                               ),
                                         ),
-                                        Text(
-                                          dateTimeFormat(
-                                            "hh:mm",
-                                            agendamentosItem.data!,
-                                            locale: FFLocalizations.of(context)
-                                                .languageCode,
+                                        InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            FFAppState().alarme = [];
+                                            safeSetState(() {});
+                                          },
+                                          child: Text(
+                                            dateTimeFormat(
+                                              "hh:mm",
+                                              agendamentosItem.data!,
+                                              locale:
+                                                  FFLocalizations.of(context)
+                                                      .languageCode,
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Inter',
+                                                  fontSize: 24.0,
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                fontSize: 24.0,
-                                                letterSpacing: 0.0,
-                                              ),
                                         ),
                                       ],
                                     ),

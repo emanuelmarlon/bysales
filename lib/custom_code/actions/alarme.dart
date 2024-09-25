@@ -8,56 +8,18 @@ import 'package:flutter/material.dart';
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 import 'package:alarm/alarm.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlarmStorage {
   static late SharedPreferences prefs;
 
+  // Inicializa o SharedPreferences
   static Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
   }
 }
 
-// Inicializa as notificações
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-Future<void> initNotifications() async {
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('app_icon');
-
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
-
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-}
-
-// Função para exibir uma notificação com um botão para parar o alarme
-Future<void> showNotification(int id) async {
-  const AndroidNotificationDetails androidPlatformChannelSpecifics =
-      AndroidNotificationDetails(
-    'alarm_channel',
-    'Alarm Notifications',
-    channelDescription: 'Notifications for Alarm',
-    importance: Importance.max,
-    priority: Priority.high,
-    fullScreenIntent: true,
-  );
-
-  const NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
-
-  await flutterLocalNotificationsPlugin.show(
-    id,
-    'Alarme Ativo',
-    'Clique para parar o alarme',
-    platformChannelSpecifics,
-    payload: id.toString(),
-  );
-}
-
-// Função para agendar um alarme
+// Função para agendar um alarme com data, id, título, corpo da notificação, loop de áudio, vibração, volume e caminho do áudio como parâmetros
 Future<void> alarme(
   DateTime data,
   int id,
@@ -68,60 +30,55 @@ Future<void> alarme(
   double volume,
   String assetAudio,
 ) async {
+  // Inicializa o Alarm service
   await Alarm.init();
 
+  // Defina as configurações do alarme usando os parâmetros fornecidos
   AlarmSettings alarmSettings = AlarmSettings(
-    id: id,
-    dateTime: data,
-    assetAudioPath: assetAudio,
-    loopAudio: loopAudio,
-    vibrate: vibrate,
-    volume: volume,
-    notificationTitle: titulo, // Título da notificação
-    notificationBody: notificationbody, // Corpo da notificação
+    id: id, // Utiliza o id fornecido como identificador do alarme
+    dateTime: data, // Utiliza a data fornecida como horário do alarme
+    assetAudioPath:
+        assetAudio, // Caminho do arquivo de áudio para o alarme fornecido como parâmetro
+    loopAudio: loopAudio, // Define se o áudio deve repetir
+    vibrate: vibrate, // Define se o alarme deve vibrar
+    volume: volume, // Define o volume do alarme
+    notificationTitle: titulo, // Utiliza o título fornecido para a notificação
+    notificationBody:
+        notificationbody, // Utiliza o corpo da notificação fornecido
+    enableNotificationOnKill: true,
     androidFullScreenIntent: true,
   );
 
+  // Agendar o alarme usando as configurações criadas
   try {
     await Alarm.set(alarmSettings: alarmSettings);
     print('Alarme agendado com sucesso para $data com id $id');
-    await showNotification(id); // Exibe a notificação personalizada
   } catch (e) {
     print('Erro ao agendar o alarme: $e');
-  }
-}
-
-// Função para cancelar o alarme
-Future<void> cancelarAlarme(int id) async {
-  try {
-    await Alarm.stop(id);
-    await flutterLocalNotificationsPlugin.cancel(id); // Cancela a notificação
-    print('Alarme $id cancelado');
-  } catch (e) {
-    print('Erro ao cancelar o alarme: $e');
   }
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AlarmStorage.init();
-  await initNotifications(); // Inicializa o serviço de notificações
 
+  // Exemplo de chamada da função com data, id, título, notificationbody, loopAudio, vibrate, volume e caminho do áudio como parâmetros
   DateTime alarmeData = DateTime.now().add(const Duration(seconds: 10));
   await alarme(
-    alarmeData,
-    1,
-    'Lembrete', // Título da notificação
+    alarmeData, // Data do alarme
+    1, // ID do alarme
+    'Lembrete', // Título do alarme
     'É hora de fazer uma pausa!', // Corpo da notificação
-    true,
-    true,
-    0.5,
-    'assets/audios/alarm.mp3',
+    true, // loopAudio: Áudio será repetido
+    true, // vibrate: Dispositivo irá vibrar
+    0.5, // volume: Volume do alarme (de 0.0 a 1.0)
+    'assets/audios/alarm.mp3', // Caminho do arquivo de áudio personalizado
   );
 
   runApp(MyApp());
 }
 
+// Widget básico para iniciar o app
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -131,19 +88,8 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Alarm App'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Alarme agendado com sucesso!'),
-              ElevatedButton(
-                onPressed: () async {
-                  await cancelarAlarme(1); // Cancela o alarme com ID 1
-                },
-                child: const Text('Cancelar Alarme'),
-              ),
-            ],
-          ),
+        body: const Center(
+          child: Text('Alarme agendado com sucesso!'),
         ),
       ),
     );

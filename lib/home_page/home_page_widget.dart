@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'dart:async';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/random_data_util.dart' as random_data;
 import 'package:flutter/material.dart';
@@ -525,7 +526,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             _model.data = _model.datePicked;
                             safeSetState(() {});
                             _model.id = valueOrDefault<int>(
-                              random_data.randomInteger(1, 9999999999999),
+                              random_data.randomInteger(1, 1000),
                               1,
                             );
                             safeSetState(() {});
@@ -542,43 +543,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               vibrar: _model.switchVibrarValue,
                               volume: _model.sliderVolumeValue,
                               loop: _model.switchAudioValue,
-                              id: _model.id,
-                            ));
-                            safeSetState(() {});
-                            await actions.alarme(
-                              _model.data!,
-                              valueOrDefault<int>(
+                              id: valueOrDefault<int>(
                                 _model.id,
                                 1,
                               ),
-                              valueOrDefault<String>(
-                                _model.textController1.text,
-                                'Alarme',
-                              ),
-                              valueOrDefault<String>(
-                                _model.textController2.text,
-                                'Disparando alarme.',
-                              ),
-                              _model.switchAudioValue!,
-                              _model.switchVibrarValue!,
-                              _model.sliderVolumeValue!,
-                              valueOrDefault<String>(
-                                () {
-                                  if (_model.dropDownValue == 'Audio 1') {
-                                    return 'assets/audios/alarm.mp3';
-                                  } else if (_model.dropDownValue ==
-                                      'Audio 2') {
-                                    return 'assets/audios/alarm1.mp3';
-                                  } else if (_model.dropDownValue ==
-                                      'Audio 3') {
-                                    return 'assets/audios/alarm2.mp3';
-                                  } else {
-                                    return 'assets/audios/alarm.mp3';
-                                  }
-                                }(),
-                                'assets/audios/alarm.mp3',
-                              ),
-                            );
+                            ));
+                            FFAppState().update(() {});
                             context.safePop();
                             ScaffoldMessenger.of(context).clearSnackBars();
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -595,6 +565,41 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 backgroundColor:
                                     FlutterFlowTheme.of(context).primary,
                               ),
+                            );
+                            unawaited(
+                              () async {
+                                await actions.alarme(
+                                  _model.data!,
+                                  _model.id!,
+                                  valueOrDefault<String>(
+                                    _model.textController1.text,
+                                    'Alarme',
+                                  ),
+                                  valueOrDefault<String>(
+                                    _model.textController2.text,
+                                    'Disparando alarme.',
+                                  ),
+                                  _model.switchAudioValue!,
+                                  _model.switchVibrarValue!,
+                                  _model.sliderVolumeValue!,
+                                  valueOrDefault<String>(
+                                    () {
+                                      if (_model.dropDownValue == 'Audio 1') {
+                                        return 'assets/audios/alarm.mp3';
+                                      } else if (_model.dropDownValue ==
+                                          'Audio 2') {
+                                        return 'assets/audios/alarm1.mp3';
+                                      } else if (_model.dropDownValue ==
+                                          'Audio 3') {
+                                        return 'assets/audios/alarm2.mp3';
+                                      } else {
+                                        return 'assets/audios/alarm.mp3';
+                                      }
+                                    }(),
+                                    'assets/audios/alarm.mp3',
+                                  ),
+                                );
+                              }(),
                             );
                           },
                           text: 'Agendar alarme',
