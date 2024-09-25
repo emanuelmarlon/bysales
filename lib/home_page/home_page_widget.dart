@@ -346,7 +346,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             1,
                             'Alarme do marcos',
                             'Escreva qualquer mensagem',
-                            _model.switchAudioValue!,
+                            false,
                             _model.switchVibrarValue!,
                             _model.sliderVolumeValue!,
                             valueOrDefault<String>(
