@@ -619,7 +619,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           return 'assets/audios/alarm1.mp3';
                                         } else if (_model.dropDownValue ==
                                             'Audio 3') {
-                                          return 'assets/alarm2.mp3';
+                                          return 'assets/audios/alarm2.mp3';
                                         } else {
                                           return 'assets/audios/alarm.mp3';
                                         }
