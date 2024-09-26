@@ -269,14 +269,14 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                                           alertDialogContext,
                                                                           false),
                                                                       child: const Text(
-                                                                          'Cancel'),
+                                                                          'Cancelar'),
                                                                     ),
                                                                     TextButton(
                                                                       onPressed: () => Navigator.pop(
                                                                           alertDialogContext,
                                                                           true),
                                                                       child: const Text(
-                                                                          'Confirm'),
+                                                                          'Confirmar'),
                                                                     ),
                                                                   ],
                                                                 );

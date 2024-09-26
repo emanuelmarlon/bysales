@@ -1,4 +1,5 @@
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_audio_player.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -613,18 +614,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     valueOrDefault<String>(
                                       () {
                                         if (_model.dropDownValue == 'Audio 1') {
-                                          return 'assets/audios/alarm.mp3';
+                                          return 'assets/alarm.mp3';
                                         } else if (_model.dropDownValue ==
                                             'Audio 2') {
-                                          return 'assets/audios/alarm1.mp3';
+                                          return 'assets/alarm1.mp3';
                                         } else if (_model.dropDownValue ==
                                             'Audio 3') {
-                                          return 'assets/audios/alarm2.mp3';
+                                          return 'assets/alarm2.mp3';
                                         } else {
-                                          return 'assets/audios/alarm.mp3';
+                                          return 'assets/alarm.mp3';
                                         }
                                       }(),
-                                      'assets/audios/alarm.mp3',
+                                      'assets/alarm.mp3',
                                     ),
                                   );
                                 }(),
@@ -653,6 +654,111 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ],
                     ),
                   ),
+                  if (responsiveVisibility(
+                    context: context,
+                    phone: false,
+                    tablet: false,
+                    tabletLandscape: false,
+                    desktop: false,
+                  ))
+                    FlutterFlowAudioPlayer(
+                      audio: Audio(
+                        'assets/audios/alarm.mp3',
+                        metas: Metas(
+                          id: 'alarm.mp3-38f6dd02',
+                          title: 'Title',
+                        ),
+                      ),
+                      titleTextStyle:
+                          FlutterFlowTheme.of(context).titleLarge.override(
+                                fontFamily: 'Inter Tight',
+                                letterSpacing: 0.0,
+                              ),
+                      playbackDurationTextStyle:
+                          FlutterFlowTheme.of(context).labelMedium.override(
+                                fontFamily: 'Inter',
+                                letterSpacing: 0.0,
+                              ),
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
+                      playbackButtonColor: FlutterFlowTheme.of(context).primary,
+                      activeTrackColor: FlutterFlowTheme.of(context).primary,
+                      inactiveTrackColor:
+                          FlutterFlowTheme.of(context).alternate,
+                      elevation: 0.0,
+                      playInBackground:
+                          PlayInBackground.disabledRestoreOnForeground,
+                    ),
+                  if (responsiveVisibility(
+                    context: context,
+                    phone: false,
+                    tablet: false,
+                    tabletLandscape: false,
+                    desktop: false,
+                  ))
+                    FlutterFlowAudioPlayer(
+                      audio: Audio(
+                        'assets/audios/alarm2.mp3',
+                        metas: Metas(
+                          id: 'alarm2.mp3-51cd5564',
+                          title: 'Title',
+                        ),
+                      ),
+                      titleTextStyle:
+                          FlutterFlowTheme.of(context).titleLarge.override(
+                                fontFamily: 'Inter Tight',
+                                letterSpacing: 0.0,
+                              ),
+                      playbackDurationTextStyle:
+                          FlutterFlowTheme.of(context).labelMedium.override(
+                                fontFamily: 'Inter',
+                                letterSpacing: 0.0,
+                              ),
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
+                      playbackButtonColor: FlutterFlowTheme.of(context).primary,
+                      activeTrackColor: FlutterFlowTheme.of(context).primary,
+                      inactiveTrackColor:
+                          FlutterFlowTheme.of(context).alternate,
+                      elevation: 0.0,
+                      playInBackground:
+                          PlayInBackground.disabledRestoreOnForeground,
+                    ),
+                  if (responsiveVisibility(
+                    context: context,
+                    phone: false,
+                    tablet: false,
+                    tabletLandscape: false,
+                    desktop: false,
+                  ))
+                    FlutterFlowAudioPlayer(
+                      audio: Audio(
+                        'assets/audios/alarm1.mp3',
+                        metas: Metas(
+                          id: 'alarm1.mp3-d37a8398',
+                          title: 'Title',
+                        ),
+                      ),
+                      titleTextStyle:
+                          FlutterFlowTheme.of(context).titleLarge.override(
+                                fontFamily: 'Inter Tight',
+                                letterSpacing: 0.0,
+                              ),
+                      playbackDurationTextStyle:
+                          FlutterFlowTheme.of(context).labelMedium.override(
+                                fontFamily: 'Inter',
+                                letterSpacing: 0.0,
+                              ),
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
+                      playbackButtonColor: FlutterFlowTheme.of(context).primary,
+                      activeTrackColor: FlutterFlowTheme.of(context).primary,
+                      inactiveTrackColor:
+                          FlutterFlowTheme.of(context).alternate,
+                      elevation: 0.0,
+                      playInBackground:
+                          PlayInBackground.disabledRestoreOnForeground,
+                    ),
                 ],
               ),
             ),

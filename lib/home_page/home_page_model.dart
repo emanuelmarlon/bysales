@@ -10,6 +10,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   int? id;
 
+  String? string;
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for TextField widget.

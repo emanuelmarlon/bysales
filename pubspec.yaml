@@ -26,6 +26,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   alarm: ^3.1.5
+  assets_audio_player: 3.1.1
+  assets_audio_player_web: 3.1.1
   auto_size_text: 3.0.0
   cached_network_image: 3.3.1
   collection: 1.18.0
@@ -45,6 +47,7 @@ dependencies:
   path_provider_foundation: 2.4.0
   path_provider_platform_interface: 2.1.2
   provider: 6.1.2
+  rxdart: 0.27.7
   shared_preferences: 2.2.2
   shared_preferences_android: 2.2.1
   shared_preferences_foundation: 2.3.4
