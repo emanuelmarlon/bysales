@@ -288,6 +288,12 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                           .removeFromAlarme(
                                                               agendamentosItem);
                                                       safeSetState(() {});
+                                                      await actions.pararalarme(
+                                                        valueOrDefault<int>(
+                                                          agendamentosItem.id,
+                                                          1,
+                                                        ),
+                                                      );
                                                     }
                                                   },
                                                   child: Icon(
@@ -309,6 +315,32 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                       Colors.transparent,
                                                   onTap: () async {
                                                     await actions.pararalarme(
+                                                      valueOrDefault<int>(
+                                                        agendamentosItem.id,
+                                                        1,
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Icon(
+                                                    Icons.stop,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primary,
+                                                    size: 48.0,
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  focusColor:
+                                                      Colors.transparent,
+                                                  hoverColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  onTap: () async {
+                                                    await actions
+                                                        .pararalarmeCopy(
                                                       valueOrDefault<int>(
                                                         agendamentosItem.id,
                                                         1,

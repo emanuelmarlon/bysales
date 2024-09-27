@@ -595,6 +595,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       FlutterFlowTheme.of(context).primary,
                                 ),
                               );
+                              await actions.scheduleNotification(
+                                'Alarme',
+                                'Disparando alarme',
+                                _model.data,
+                                _model.id!,
+                              );
                               unawaited(
                                 () async {
                                   await actions.alarme(
@@ -614,18 +620,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     valueOrDefault<String>(
                                       () {
                                         if (_model.dropDownValue == 'Audio 1') {
-                                          return 'assets/alarm.mp3';
+                                          return 'assets/audios/alarm.mp3';
                                         } else if (_model.dropDownValue ==
                                             'Audio 2') {
-                                          return 'assets/alarm1.mp3';
+                                          return 'assets/audios/alarm1.mp3';
                                         } else if (_model.dropDownValue ==
                                             'Audio 3') {
-                                          return 'assets/alarm2.mp3';
+                                          return 'assets/audios/alarm2.mp3';
                                         } else {
-                                          return 'assets/alarm.mp3';
+                                          return 'assets/audios/alarm.mp3';
                                         }
                                       }(),
-                                      'assets/alarm.mp3',
+                                      'assets/audios/alarm.mp3',
                                     ),
                                   );
                                 }(),
@@ -758,6 +764,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       elevation: 0.0,
                       playInBackground:
                           PlayInBackground.disabledRestoreOnForeground,
+                    ),
+                  if (responsiveVisibility(
+                    context: context,
+                    phone: false,
+                    tablet: false,
+                    tabletLandscape: false,
+                    desktop: false,
+                  ))
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.asset(
+                        'assets/images/botao.jpg',
+                        width: 200.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                 ],
               ),
