@@ -16,7 +16,12 @@ Map<int, bool> alarmStates = {};
 
 // Função para solicitar permissões de notificação
 Future<void> requestNotificationPermissions() async {
-  // Implementar a lógica para solicitar permissões se necessário
+  try {
+    // Implementar a lógica para solicitar permissões se necessário
+    print("Solicitando permissões de notificação...");
+  } catch (e) {
+    print("Erro ao solicitar permissões: $e");
+  }
 }
 
 // Função para agendar a notificação
@@ -26,91 +31,111 @@ Future<void> scheduleNotification(
   DateTime? dateTime,
   int alarmId,
 ) async {
-  print('Provided date and time: $dateTime');
+  try {
+    print('Data e hora fornecidas: $dateTime');
+    await requestNotificationPermissions();
 
-  await requestNotificationPermissions();
+    // Inicializa os timezones
+    tzdata.initializeTimeZones();
 
-  tzdata.initializeTimeZones();
+    // Plugin de notificações
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+    var androidSettings = AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      importance: Importance.high,
+      priority: Priority.high,
+      icon: '@mipmap/ic_launcher', // Nome do ícone pequeno
+      // Adicionando ações à notificação
+      actions: <AndroidNotificationAction>[
+        AndroidNotificationAction(
+          'stop_alarm',
+          'Parar Alarme',
+        ),
+      ],
+    );
 
-  var androidSettings = AndroidNotificationDetails(
-    'channel_id',
-    'channel_name',
-    importance: Importance.high,
-    priority: Priority.high,
-    icon: '@mipmap/ic_launcher', // Nome do ícone pequeno
-    // Adicionando ações à notificação
-    actions: <AndroidNotificationAction>[
-      AndroidNotificationAction(
-        'stop_alarm',
-        'Parar Alarme',
-      ),
-    ],
-  );
+    var notificationDetails =
+        NotificationDetails(android: androidSettings, iOS: null);
 
-  var notificationDetails =
-      NotificationDetails(android: androidSettings, iOS: null);
+    var deviceTimeZone = tz.local;
 
-  var deviceTimeZone = tz.local;
+    var scheduledTime = tz.TZDateTime.from(
+      dateTime!,
+      deviceTimeZone,
+    );
 
-  var scheduledTime = tz.TZDateTime.from(
-    dateTime!,
-    deviceTimeZone,
-  );
+    // Agendando a notificação
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      alarmId, // Usar alarmId como ID da notificação
+      title!,
+      content!,
+      scheduledTime,
+      notificationDetails,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: '$alarmId', // Passar o alarmId como parte do payload
+    );
 
-  // Agendando a notificação
-  await flutterLocalNotificationsPlugin.zonedSchedule(
-    alarmId, // Usar alarmId como ID da notificação
-    title!,
-    content!,
-    scheduledTime,
-    notificationDetails,
-    androidAllowWhileIdle: true,
-    uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime,
-    matchDateTimeComponents: DateTimeComponents.time,
-    payload: 'Custom_Sound',
-  );
-
-  alarmStates[alarmId] = true; // Indica que o alarme está ativo
+    alarmStates[alarmId] = true; // Indica que o alarme está ativo
+    print("Notificação agendada com sucesso para o alarme ID: $alarmId");
+  } catch (e) {
+    print("Erro ao agendar a notificação: $e");
+  }
 }
 
 // Função para tratar a resposta da notificação
 Future<void> handleNotificationResponse(NotificationResponse response) async {
-  if (response.actionId == 'stop_alarm') {
-    int alarmId = response.payload != null ? int.parse(response.payload!) : 0;
-
-    if (alarmStates.containsKey(alarmId)) {
-      // Lógica para parar o alarme
-      alarmStates[alarmId] = false; // Alarme parado
-      print('Alarme $alarmId parado!');
-
-      // Aqui você pode adicionar a lógica para parar o alarme
+  try {
+    if (response.actionId == 'stop_alarm') {
+      int alarmId =
+          int.parse(response.payload!); // Converte o payload para o alarmId
+      if (alarmStates.containsKey(alarmId)) {
+        // Lógica para parar o alarme
+        alarmStates[alarmId] = false; // Alarme parado
+        print('Alarme $alarmId parado!');
+        // Aqui você pode adicionar a lógica para parar o alarme
+      } else {
+        print('Alarme $alarmId não encontrado no estado ativo!');
+      }
     }
+  } catch (e) {
+    print("Erro ao tratar a resposta da notificação: $e");
   }
 }
 
 // Inicialização do plugin de notificações
 void initializeNotifications() {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  try {
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
 
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: null,
-  );
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: null,
+    );
 
-  flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse: (NotificationResponse response) {
-      handleNotificationResponse(response);
-    },
-  );
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        handleNotificationResponse(response);
+      },
+    );
+
+    print("Notificações inicializadas com sucesso!");
+  } catch (e) {
+    print("Erro ao inicializar notificações: $e");
+  }
 }
+
+// Chame `initializeNotifications()` no `main()` do seu app
 
 // Lembre-se de chamar initializeNotifications() no seu main()
