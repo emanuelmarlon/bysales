@@ -596,10 +596,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ),
                               );
                               await actions.scheduleNotification(
+                                _model.id!,
                                 'Alarme',
                                 'Disparando alarme',
                                 _model.data,
-                                _model.id!,
                               );
                               unawaited(
                                 () async {

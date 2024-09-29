@@ -10,51 +10,88 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:alarm/alarm.dart'; // Import do pacote alarm
+import 'package:shared_preferences/shared_preferences.dart'; // Import do shared_preferences
 
-Future scheduleNotification(
-    String? title,
-    String? content,
-    DateTime?
-        dateTime, // Change type to DateTime for combined date and time parameter
-    int alarmId) async {
-  // Print the provided date and time for debugging
+// Inicialize o FlutterLocalNotificationsPlugin fora da função para ser acessível globalmente
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+// Função de inicialização das notificações
+Future<void> initializeNotifications() async {
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings(
+          '@mipmap/ic_launcher'); // Ícone da notificação
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: null,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse:
+        onDidReceiveNotificationResponse, // Define a função chamada ao clicar na notificação
+  );
+}
+
+// Função chamada ao clicar na notificação
+Future<void> onDidReceiveNotificationResponse(
+    NotificationResponse notificationResponse) async {
+  if (notificationResponse.payload != null) {
+    // Parse o ID do alarme do payload (ID do alarme já agendado)
+    int id = int.parse(notificationResponse.payload!);
+
+    // Para o alarme com o ID fornecido
+    await Alarm.stop(id);
+
+    // Cancela a notificação com o mesmo ID
+    await flutterLocalNotificationsPlugin.cancel(id);
+
+    // Print para debugging
+    print('Alarme $id parado e notificação cancelada.');
+  }
+}
+
+// Função para agendar a notificação (sem agendar o alarme)
+Future<void> scheduleNotification(
+  int id, // Parâmetro para o ID da notificação (mesmo ID do alarme)
+  String? title,
+  String? content,
+  DateTime? dateTime, // Parâmetro para a data e hora
+) async {
   print('Provided date and time: $dateTime');
 
   await requestNotificationPermissions();
 
-  // Initialize the timezone database
+  // Inicializa o banco de dados de timezone
   tzdata.initializeTimeZones();
 
-  // Initialize the FlutterLocalNotificationsPlugin
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
-  // Initialize the Android-specific settings for the notification
+  // Configurações da notificação para Android
   var androidSettings = AndroidNotificationDetails(
     'channel_id',
     'channel_name',
     importance: Importance.high,
     priority: Priority.high,
-    icon:
-        '@mipmap/ic_launcher', // Replace with your small icon name without the extension
+    icon: '@mipmap/ic_launcher',
   );
 
-  // Initialize the notification details
+  // Detalhes da notificação
   var notificationDetails =
       NotificationDetails(android: androidSettings, iOS: null);
 
-  // Get the device's timezone
+  // Pega o fuso horário do dispositivo
   var deviceTimeZone = tz.local;
 
-  // Convert the scheduled date and time to the device's timezone
+  // Converte a data e hora agendada para o fuso horário do dispositivo
   var scheduledTime = tz.TZDateTime.from(
     dateTime!,
     deviceTimeZone,
   );
 
-  // Schedule the notification
+  // Agenda a notificação e usa o ID como payload (mesmo ID do alarme)
   await flutterLocalNotificationsPlugin.zonedSchedule(
-    0,
+    id, // Usar o ID do alarme como ID da notificação
     title!,
     content!,
     scheduledTime,
@@ -63,6 +100,12 @@ Future scheduleNotification(
     uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
     matchDateTimeComponents: DateTimeComponents.time,
-    payload: 'Custom_Sound',
+    payload: id.toString(), // Define o ID como payload para ser usado no clique
   );
+}
+
+// Exemplo de função para solicitar permissões de notificação (para iOS se necessário)
+Future<void> requestNotificationPermissions() async {
+  // Código para pedir permissão de notificação (somente relevante para iOS)
+  // No Android, não é necessário.
 }
