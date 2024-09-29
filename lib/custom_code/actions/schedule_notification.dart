@@ -12,16 +12,19 @@ import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:alarm/alarm.dart'; // Import do pacote alarm
 import 'package:shared_preferences/shared_preferences.dart'; // Import do shared_preferences
+import 'dart:async';
 
-// Inicialize o FlutterLocalNotificationsPlugin fora da função para ser acessível globalmente
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-// Função de inicialização das notificações
+// Streams de notificações
+final StreamController<String?> selectNotificationStream =
+    StreamController<String?>();
+
+// Função para inicializar notificações
 Future<void> initializeNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings(
-          '@mipmap/ic_launcher'); // Ícone da notificação
+      AndroidInitializationSettings('@mipmap/ic_launcher');
 
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
@@ -30,44 +33,63 @@ Future<void> initializeNotifications() async {
 
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
-    onDidReceiveNotificationResponse:
-        onDidReceiveNotificationResponse, // Define a função chamada ao clicar na notificação
+    onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
   );
+
+  _configureSelectNotificationStream();
 }
 
 // Função chamada ao clicar na notificação
 Future<void> onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse) async {
-  if (notificationResponse.payload != null) {
-    // Parse o ID do alarme do payload (ID do alarme já agendado)
-    int id = int.parse(notificationResponse.payload!);
-
-    // Para o alarme com o ID fornecido
-    await Alarm.stop(id);
-
-    // Cancela a notificação com o mesmo ID
-    await flutterLocalNotificationsPlugin.cancel(id);
-
-    // Print para debugging
-    print('Alarme $id parado e notificação cancelada.');
+  if (notificationResponse.payload != null &&
+      notificationResponse.payload!.isNotEmpty) {
+    // Passa o payload (ID do alarme) para o stream de notificação
+    selectNotificationStream.add(notificationResponse.payload);
   }
 }
 
-// Função para agendar a notificação (sem agendar o alarme)
+// Função para parar o alarme
+Future<void> pararalarme(int id) async {
+  bool result = await Alarm.stop(id);
+
+  if (result) {
+    print("Alarme $id parado com sucesso.");
+  } else {
+    print("Nenhum alarme ativo encontrado para o ID $id.");
+  }
+}
+
+// Função para configurar o stream ao clicar na notificação
+void _configureSelectNotificationStream() {
+  selectNotificationStream.stream.listen((String? payload) async {
+    if (payload != null) {
+      int id = int.parse(payload);
+      print('Notificação clicada. Tentando parar alarme com ID: $id');
+
+      await pararalarme(id);
+
+      // Cancela a notificação
+      await flutterLocalNotificationsPlugin.cancel(id);
+    }
+  });
+}
+
+// Função para agendar a notificação
 Future<void> scheduleNotification(
-  int id, // Parâmetro para o ID da notificação (mesmo ID do alarme)
+  int id,
   String? title,
   String? content,
-  DateTime? dateTime, // Parâmetro para a data e hora
+  DateTime? dateTime,
 ) async {
-  print('Provided date and time: $dateTime');
+  print('Data e hora fornecidas: $dateTime');
 
   await requestNotificationPermissions();
 
-  // Inicializa o banco de dados de timezone
+  // Inicializa o banco de dados de timezones
   tzdata.initializeTimeZones();
 
-  // Configurações da notificação para Android
+  // Configuração da notificação
   var androidSettings = AndroidNotificationDetails(
     'channel_id',
     'channel_name',
@@ -76,22 +98,17 @@ Future<void> scheduleNotification(
     icon: '@mipmap/ic_launcher',
   );
 
-  // Detalhes da notificação
-  var notificationDetails =
-      NotificationDetails(android: androidSettings, iOS: null);
+  var notificationDetails = NotificationDetails(android: androidSettings);
 
-  // Pega o fuso horário do dispositivo
+  // Obtem o fuso horário do dispositivo
   var deviceTimeZone = tz.local;
 
-  // Converte a data e hora agendada para o fuso horário do dispositivo
-  var scheduledTime = tz.TZDateTime.from(
-    dateTime!,
-    deviceTimeZone,
-  );
+  // Converte a data e hora para o fuso horário do dispositivo
+  var scheduledTime = tz.TZDateTime.from(dateTime!, deviceTimeZone);
 
-  // Agenda a notificação e usa o ID como payload (mesmo ID do alarme)
+  // Agenda a notificação
   await flutterLocalNotificationsPlugin.zonedSchedule(
-    id, // Usar o ID do alarme como ID da notificação
+    id, // ID da notificação e do alarme
     title!,
     content!,
     scheduledTime,
@@ -99,13 +116,62 @@ Future<void> scheduleNotification(
     androidAllowWhileIdle: true,
     uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
-    matchDateTimeComponents: DateTimeComponents.time,
-    payload: id.toString(), // Define o ID como payload para ser usado no clique
+    payload: id.toString(), // Usa o ID do alarme como payload
   );
 }
 
-// Exemplo de função para solicitar permissões de notificação (para iOS se necessário)
+// Função para solicitar permissões de notificação
 Future<void> requestNotificationPermissions() async {
-  // Código para pedir permissão de notificação (somente relevante para iOS)
-  // No Android, não é necessário.
+  // Em Android não é necessário solicitar permissões explicitamente,
+  // mas para iOS, deve-se pedir permissão aqui.
+}
+
+// Exemplo de uso para agendar notificação
+void exampleUsage() async {
+  await scheduleNotification(
+    123, // ID do alarme
+    'Alarme Ativo',
+    'Clique para parar o alarme',
+    DateTime.now().add(Duration(seconds: 10)), // Data e hora da notificação
+  );
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeNotifications();
+  runApp(MyApp());
+}
+
+// Definição da função `MyApp`
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Alarm Notification',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+// Definição do widget `MyHomePage`
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Agendamento de Notificações e Alarmes'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            exampleUsage();
+          },
+          child: Text('Agendar Notificação e Alarme'),
+        ),
+      ),
+    );
+  }
 }
