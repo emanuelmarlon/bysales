@@ -79,14 +79,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
               Align(
                 alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Text(
-                  'Agendamento',
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Inter Tight',
-                        color: Colors.white,
-                        fontSize: 22.0,
-                        letterSpacing: 0.0,
-                      ),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    await actions.requestNotificationPermissions();
+                  },
+                  child: Text(
+                    'Agendamento',
+                    style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          fontFamily: 'Inter Tight',
+                          color: Colors.white,
+                          fontSize: 22.0,
+                          letterSpacing: 0.0,
+                        ),
+                  ),
                 ),
               ),
             ],
@@ -113,34 +122,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              await actions.requestNotificationPermissions();
-                            },
-                            child: Text(
-                              valueOrDefault<String>(
-                                dateTimeFormat(
-                                  "dd/MM/yyyy HH:mm",
-                                  _model.data,
-                                  locale:
-                                      FFLocalizations.of(context).languageCode,
-                                ),
-                                'Data e hora',
+                          Text(
+                            valueOrDefault<String>(
+                              dateTimeFormat(
+                                "dd/MM/yyyy HH:mm",
+                                _model.data,
+                                locale:
+                                    FFLocalizations.of(context).languageCode,
                               ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Inter',
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    fontSize: 24.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              'Data e hora',
                             ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Inter',
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  fontSize: 24.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ],
                       ),
