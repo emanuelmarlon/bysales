@@ -320,6 +320,13 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                         1,
                                                       ),
                                                     );
+                                                    await actions
+                                                        .cancelarNotificacao(
+                                                      valueOrDefault<int>(
+                                                        agendamentosItem.id,
+                                                        1,
+                                                      ),
+                                                    );
                                                   },
                                                   child: Icon(
                                                     Icons.stop,
