@@ -10,14 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:alarm/alarm.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> scheduleNotification(
-  int id, // Adicionando o parâmetro id
+Future scheduleNotification(
   String? title,
   String? content,
-  DateTime? dateTime,
+  DateTime?
+      dateTime, // Change type to DateTime for combined date and time parameter
+  int id,
 ) async {
   // Print the provided date and time for debugging
   print('Provided date and time: $dateTime');
@@ -56,7 +55,7 @@ Future<void> scheduleNotification(
 
   // Schedule the notification
   await flutterLocalNotificationsPlugin.zonedSchedule(
-    id, // Usando o id passado
+    0,
     title!,
     content!,
     scheduledTime,
@@ -65,30 +64,6 @@ Future<void> scheduleNotification(
     uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
     matchDateTimeComponents: DateTimeComponents.time,
-    payload: id.toString(), // Passando o id como payload
+    payload: 'Custom_Sound',
   );
-}
-
-Future<void> pararalarme(int id) async {
-  // Add your function code here!
-  bool result =
-      await Alarm.stop(id); // (mesmo id da notificação passado como parametro)
-
-  if (result) {
-    print("Alarme $id parado com sucesso.");
-  } else {
-    print("Nenhum alarme ativo encontrado para o ID $id.");
-  }
-}
-
-// Função chamada ao clicar na notificação
-Future<void> onDidReceiveNotificationResponse(
-    NotificationResponse notificationResponse) async {
-  if (notificationResponse.payload != null &&
-      notificationResponse.payload!.isNotEmpty) {
-    int id = int.parse(notificationResponse.payload!);
-    print('Notificação clicada. Tentando parar alarme com ID: $id');
-
-    await pararalarme(id); // Parar o alarme usando o id da notificação
-  }
 }

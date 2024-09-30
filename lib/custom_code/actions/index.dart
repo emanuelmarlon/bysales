@@ -7,3 +7,4 @@ export 'pararalarme_copy.dart' show pararalarmeCopy;
 export 'local_notification.dart' show localNotification;
 export 'schedule_notification.dart' show scheduleNotification;
 export 'ascender_tela.dart' show ascenderTela;
+export 'cancelar_notificacao.dart' show cancelarNotificacao;

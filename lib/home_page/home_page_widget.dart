@@ -113,25 +113,34 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            valueOrDefault<String>(
-                              dateTimeFormat(
-                                "dd/MM/yyyy HH:mm",
-                                _model.data,
-                                locale:
-                                    FFLocalizations.of(context).languageCode,
-                              ),
-                              'Data e hora',
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Inter',
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  fontSize: 24.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w600,
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              await actions.requestNotificationPermissions();
+                            },
+                            child: Text(
+                              valueOrDefault<String>(
+                                dateTimeFormat(
+                                  "dd/MM/yyyy HH:mm",
+                                  _model.data,
+                                  locale:
+                                      FFLocalizations.of(context).languageCode,
                                 ),
+                                'Data e hora',
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Inter',
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    fontSize: 24.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
                           ),
                         ],
                       ),
@@ -596,10 +605,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ),
                               );
                               await actions.scheduleNotification(
-                                _model.id!,
                                 'Alarme',
                                 'Disparando alarme',
                                 _model.data,
+                                _model.id!,
                               );
                               unawaited(
                                 () async {
