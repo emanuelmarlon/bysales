@@ -10,68 +10,81 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:alarm/alarm.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:alarm/alarm.dart'; // Adicione esta importação se ainda não estiver presente
 
 // Inicializa o FlutterLocalNotificationsPlugin
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-/// Função principal para agendar notificações
-Future<void> scheduleNotification(
+Future scheduleNotification(
   String? title,
   String? content,
   DateTime? dateTime, // Tipo DateTime para combinar data e hora
   int id,
 ) async {
-  // Debug: exibir data e hora fornecidas
-  print('Data e hora fornecidas: $dateTime');
+  // Print the provided date and time for debugging
+  print('Provided date and time: $dateTime');
 
-  // Solicita permissões para notificações (iOS)
   await requestNotificationPermissions();
 
-  // Inicializa o banco de dados de fuso horário
+  // Initialize the timezone database
   tzdata.initializeTimeZones();
 
-  // Configurações específicas do Android para a notificação
+  // Initialize the Android-specific settings for the notification
   var androidSettings = AndroidNotificationDetails(
-    'channel_id', // ID do canal
-    'channel_name', // Nome do canal
-    importance: Importance.high, // Alta importância
-    priority: Priority.high, // Alta prioridade
-    icon: '@mipmap/ic_launcher', // Ícone da notificação
+    'channel_id',
+    'channel_name',
+    importance: Importance.high,
+    priority: Priority.high,
+    icon:
+        '@mipmap/ic_launcher', // Replace with your small icon name without the extension
   );
 
-  // Detalhes da notificação
+  // Initialize the notification details
   var notificationDetails =
       NotificationDetails(android: androidSettings, iOS: null);
 
-  // Obtém o fuso horário do dispositivo
+  // Get the device's timezone
   var deviceTimeZone = tz.local;
 
-  // Converte a data e hora fornecidas para o fuso horário do dispositivo
-  var scheduledTime = tz.TZDateTime.from(dateTime!, deviceTimeZone);
+  // Convert the scheduled date and time to the device's timezone
+  var scheduledTime = tz.TZDateTime.from(
+    dateTime!,
+    deviceTimeZone,
+  );
 
-  // Agenda a notificação
+  // Schedule the notification
   await flutterLocalNotificationsPlugin.zonedSchedule(
-    id, // Usa o ID fornecido
-    title!, // Título da notificação
-    content!, // Conteúdo da notificação
-    scheduledTime, // Tempo agendado
-    notificationDetails, // Detalhes da notificação
-    androidAllowWhileIdle: true, // Permitir enquanto ocioso
+    id, // Use the provided ID for the notification
+    title!,
+    content!,
+    scheduledTime,
+    notificationDetails,
+    androidAllowWhileIdle: true,
     uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
     matchDateTimeComponents: DateTimeComponents.time,
-    payload: id.toString(), // Passa o ID como payload
+    payload: id.toString(), // Pass the ID as payload
   );
 }
 
 /// Função para lidar com o clique na notificação
 void onNotificationTap(NotificationResponse notificationResponse) async {
-  int id = int.parse(notificationResponse.payload!); // Obtém o ID do payload
-  await pararAlarme(id); // Chama a função para parar o alarme
-  await cancelNotification(id); // Cancela a notificação
+  // Verifique se o payload não é nulo
+  if (notificationResponse.payload != null) {
+    int id = int.parse(notificationResponse.payload!); // Obtém o ID do payload
+    await pararAlarme(id); // Chama a função para parar o alarme
+    await cancelNotification(id); // Cancela a notificação
+  } else {
+    print("Nenhum payload encontrado na notificação.");
+  }
+}
+
+/// Função para lidar com o clique na notificação quando o aplicativo está em segundo plano
+void notificationTapBackground(
+    NotificationResponse notificationResponse) async {
+  onNotificationTap(
+      notificationResponse); // Chama a função para tratar o clique
 }
 
 /// Função para parar o alarme
@@ -111,5 +124,7 @@ Future<void> initializeNotifications() async {
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: onNotificationTap, // Callback no clique
+    onDidReceiveBackgroundNotificationResponse:
+        notificationTapBackground, // Callback em segundo plano
   );
 }
