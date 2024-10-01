@@ -8,3 +8,4 @@ export 'local_notification.dart' show localNotification;
 export 'schedule_notification.dart' show scheduleNotification;
 export 'ascender_tela.dart' show ascenderTela;
 export 'cancelar_notificacao.dart' show cancelarNotificacao;
+export 'notificacao.dart' show notificacao;

@@ -604,10 +604,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       FlutterFlowTheme.of(context).primary,
                                 ),
                               );
-                              await actions.scheduleNotification(
-                                'Alarme',
-                                'Disparando alarme',
-                                _model.data,
+                              await actions.notificacao(
+                                valueOrDefault<String>(
+                                  _model.textController2.text,
+                                  'Alarme',
+                                ),
+                                valueOrDefault<String>(
+                                  _model.textController1.text,
+                                  'Disparando alarme.',
+                                ),
+                                _model.data!,
                                 _model.id!,
                               );
                               unawaited(

@@ -47,6 +47,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'agendamentos',
           path: '/agendamentos',
           builder: (context, params) => const AgendamentosWidget(),
+        ),
+        FFRoute(
+          name: 'teste',
+          path: '/teste',
+          builder: (context, params) => const TesteWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],
