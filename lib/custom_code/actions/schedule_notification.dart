@@ -11,84 +11,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:alarm/alarm.dart';
+import 'package:rxdart/rxdart.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeNotifications();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Teste de Notificação',
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Testar Notificação'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            // Chame a função para agendar a notificação
-            await scheduleNotification(
-              "Título da Notificação",
-              "Este é o conteúdo da notificação.",
-              DateTime.now().add(Duration(
-                  seconds: 5)), // Exemplo: agendar para 5 segundos depois
-              123, // ID da notificação
-            );
-          },
-          child: Text('Agendar Notificação'),
-        ),
-      ),
-    );
-  }
-}
-
-// Inicializa as notificações
-Future<void> initializeNotifications() async {
-  tzdata.initializeTimeZones();
-
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
-
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse: (NotificationResponse response) async {
-      // Imprime uma mensagem ao clicar na notificação
-      print('Notificação clicada: ID = ${response.id}');
-
-      // Cancela a notificação
-      await cancelarNotificacao(
-          response.id!); // Usando '!' para garantir que não seja nulo
-
-      // Para o alarme correspondente ao ID
-      await pararAlarme(
-          response.id!); // Usando '!' para garantir que não seja nulo
-    },
-  );
-}
-
-// Função para agendar a notificação
-Future scheduleNotification(
+Future<void> scheduleNotification(
   String? title,
   String? content,
-  DateTime? dateTime,
+  DateTime?
+      dateTime, // Change type to DateTime for combined date and time parameter
   int id,
 ) async {
   // Print the provided date and time for debugging
@@ -98,6 +27,10 @@ Future scheduleNotification(
 
   // Initialize the timezone database
   tzdata.initializeTimeZones();
+
+  // Initialize the FlutterLocalNotificationsPlugin
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   // Initialize the Android-specific settings for the notification
   var androidSettings = AndroidNotificationDetails(
@@ -124,7 +57,7 @@ Future scheduleNotification(
 
   // Schedule the notification
   await flutterLocalNotificationsPlugin.zonedSchedule(
-    id, // Use the provided ID for the notification
+    id, // Use the ID parameter for scheduling
     title!,
     content!,
     scheduledTime,
@@ -133,19 +66,19 @@ Future scheduleNotification(
     uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
     matchDateTimeComponents: DateTimeComponents.time,
-    payload: 'Custom_Sound',
+    payload: id.toString(), // Pass the ID as payload
   );
-
-  print("Notificação agendada com ID: $id para $scheduledTime");
 }
 
-// Função para cancelar a notificação
-Future<void> cancelarNotificacao(int id) async {
-  await flutterLocalNotificationsPlugin.cancel(id);
-  print("Notificação com ID $id cancelada.");
+// Function to handle notification tap
+void onNotificationTap(NotificationResponse notificationResponse) async {
+  int id =
+      int.parse(notificationResponse.payload!); // Get the ID from the payload
+  await pararAlarme(id); // Call the function to stop the alarm
+  await cancelNotification(id); // Call the function to cancel the notification
 }
 
-// Função para parar o alarme
+// Function to stop the alarm
 Future<void> pararAlarme(int id) async {
   bool result = await Alarm.stop(id);
   if (result) {
@@ -155,9 +88,10 @@ Future<void> pararAlarme(int id) async {
   }
 }
 
-// Função para solicitar permissões de notificação (exemplo)
-Future<void> requestNotificationPermissions() async {
-  // Aqui você pode implementar a lógica para solicitar permissões, se necessário.
-  // Isso pode variar dependendo da plataforma e da versão do Flutter.
-  print('Permissões de notificação solicitadas.');
+// Function to cancel the notification
+Future<void> cancelNotification(int id) async {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  await flutterLocalNotificationsPlugin.cancel(id);
+  print("Notificação $id cancelada.");
 }
