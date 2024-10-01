@@ -10,9 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 void main() {
-  // Inicializando o AwesomeNotifications antes de rodar o app
-  inicializarNotificacoes();
-
+  WidgetsFlutterBinding.ensureInitialized();
+  inicializarNotificacoes(); // Inicializando o AwesomeNotifications antes de rodar o app
   runApp(MyApp());
 }
 
