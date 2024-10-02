@@ -587,29 +587,46 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ),
                               ));
                               FFAppState().update(() {});
-                              await actions.requestNotificationPermissions();
-                              await actions.scheduleNotification(
-                                'Alarme schedule',
-                                'Disparando alarme',
-                                _model.data,
-                              );
-                              await actions.notificacao(
-                                valueOrDefault<String>(
-                                  _model.textController2.text,
-                                  'Alarme assome 1',
-                                ),
-                                valueOrDefault<String>(
-                                  _model.textController1.text,
-                                  'Disparando alarme.',
-                                ),
-                                _model.data!,
-                                _model.id!,
-                              );
                               await actions.notificacao2(
                                 'assome',
                                 'assome notificação',
                                 _model.data!,
                                 _model.id!,
+                              );
+                              unawaited(
+                                () async {
+                                  await actions.alarme(
+                                    _model.data!,
+                                    _model.id!,
+                                    valueOrDefault<String>(
+                                      _model.textController2.text,
+                                      'Alarme Alarm',
+                                    ),
+                                    valueOrDefault<String>(
+                                      _model.textController1.text,
+                                      'Disparando alarme.',
+                                    ),
+                                    _model.switchAudioValue!,
+                                    _model.switchVibrarValue!,
+                                    _model.sliderVolumeValue!,
+                                    valueOrDefault<String>(
+                                      () {
+                                        if (_model.dropDownValue == 'Audio 1') {
+                                          return 'assets/audios/alarm.mp3';
+                                        } else if (_model.dropDownValue ==
+                                            'Audio 2') {
+                                          return 'assets/audios/alarm1.mp3';
+                                        } else if (_model.dropDownValue ==
+                                            'Audio 3') {
+                                          return 'assets/audios/alarm2.mp3';
+                                        } else {
+                                          return 'assets/audios/alarm.mp3';
+                                        }
+                                      }(),
+                                      'assets/audios/alarm.mp3',
+                                    ),
+                                  );
+                                }(),
                               );
                               context.safePop();
                               ScaffoldMessenger.of(context).clearSnackBars();
@@ -627,9 +644,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).primary,
                                 ),
-                              );
-                              unawaited(
-                                () async {}(),
                               );
                             },
                             text: 'Agendar alarme',
