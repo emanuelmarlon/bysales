@@ -102,7 +102,11 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                             .toList();
                         if (agendamentos.isEmpty) {
                           return const Center(
-                            child: EmpWidget(),
+                            child: SizedBox(
+                              width: 300.0,
+                              height: 300.0,
+                              child: EmpWidget(),
+                            ),
                           );
                         }
 
