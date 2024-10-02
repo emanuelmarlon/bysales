@@ -589,12 +589,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               FFAppState().update(() {});
                               await actions.requestNotificationPermissions();
                               await actions.scheduleNotification(
-                                'Alarme',
+                                'Alarme schedule',
                                 'Disparando alarme',
                                 _model.data,
                               );
-                              unawaited(
-                                () async {}(),
+                              await actions.notificacao(
+                                valueOrDefault<String>(
+                                  _model.textController2.text,
+                                  'Alarme assome 1',
+                                ),
+                                valueOrDefault<String>(
+                                  _model.textController1.text,
+                                  'Disparando alarme.',
+                                ),
+                                _model.data!,
+                                _model.id!,
+                              );
+                              await actions.notificacao2(
+                                'assome',
+                                'assome notificação',
+                                _model.data!,
+                                _model.id!,
                               );
                               context.safePop();
                               ScaffoldMessenger.of(context).clearSnackBars();
