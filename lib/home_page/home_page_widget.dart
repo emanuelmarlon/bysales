@@ -587,43 +587,40 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ),
                               ));
                               FFAppState().update(() {});
-                              await actions.alarmeCopy(
-                                _model.data!,
-                                _model.id!,
-                                _model.switchAudioValue!,
-                                _model.switchVibrarValue!,
-                                _model.sliderVolumeValue!,
-                                valueOrDefault<String>(
-                                  () {
-                                    if (_model.dropDownValue == 'Audio 1') {
-                                      return 'assets/audios/alarm.mp3';
-                                    } else if (_model.dropDownValue ==
-                                        'Audio 2') {
-                                      return 'assets/audios/alarm1.mp3';
-                                    } else if (_model.dropDownValue ==
-                                        'Audio 3') {
-                                      return 'assets/audios/alarm2.mp3';
-                                    } else {
-                                      return 'assets/audios/alarm.mp3';
-                                    }
-                                  }(),
-                                  'assets/audios/alarm.mp3',
-                                ),
-                              );
-                              await actions.notificacao2(
-                                valueOrDefault<String>(
-                                  _model.textController2.text,
-                                  'Alarme 2',
-                                ),
-                                valueOrDefault<String>(
-                                  _model.textController1.text,
-                                  'Disparando alarme 2.',
-                                ),
-                                _model.data!,
-                                _model.id!,
-                              );
                               unawaited(
-                                () async {}(),
+                                () async {
+                                  await actions.alarme(
+                                    _model.data!,
+                                    _model.id!,
+                                    valueOrDefault<String>(
+                                      _model.textController2.text,
+                                      'Alarme',
+                                    ),
+                                    valueOrDefault<String>(
+                                      _model.textController1.text,
+                                      'Disparando alarme.',
+                                    ),
+                                    _model.switchAudioValue!,
+                                    _model.switchVibrarValue!,
+                                    _model.sliderVolumeValue!,
+                                    valueOrDefault<String>(
+                                      () {
+                                        if (_model.dropDownValue == 'Audio 1') {
+                                          return 'assets/audios/alarm.mp3';
+                                        } else if (_model.dropDownValue ==
+                                            'Audio 2') {
+                                          return 'assets/audios/alarm1.mp3';
+                                        } else if (_model.dropDownValue ==
+                                            'Audio 3') {
+                                          return 'assets/audios/alarm2.mp3';
+                                        } else {
+                                          return 'assets/audios/alarm.mp3';
+                                        }
+                                      }(),
+                                      'assets/audios/alarm.mp3',
+                                    ),
+                                  );
+                                }(),
                               );
                               context.safePop();
                               ScaffoldMessenger.of(context).clearSnackBars();

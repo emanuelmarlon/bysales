@@ -42,6 +42,7 @@ Future<void> alarmeCopy(
     volume: volume, // Define o volume do alarme
     notificationTitle: '', // String vazia para o título da notificação
     notificationBody: '', // String vazia para o corpo da notificação
+
     enableNotificationOnKill: false, // Desativa notificações ao matar o app
     androidFullScreenIntent: true,
   );

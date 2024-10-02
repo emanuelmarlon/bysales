@@ -45,6 +45,7 @@ Future<void> alarme(
     notificationTitle: titulo, // Utiliza o título fornecido para a notificação
     notificationBody:
         notificationbody, // Utiliza o corpo da notificação fornecido
+
     enableNotificationOnKill: true,
     androidFullScreenIntent: true,
   );
