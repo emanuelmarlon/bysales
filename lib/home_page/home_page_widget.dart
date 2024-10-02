@@ -588,8 +588,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ));
                               FFAppState().update(() {});
                               await actions.notificacao2(
-                                'assome',
-                                'assome notificação',
+                                valueOrDefault<String>(
+                                  _model.textController2.text,
+                                  'Alarme 2',
+                                ),
+                                valueOrDefault<String>(
+                                  _model.textController1.text,
+                                  'Disparando alarme 2.',
+                                ),
                                 _model.data!,
                                 _model.id!,
                               );
@@ -600,7 +606,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     _model.id!,
                                     valueOrDefault<String>(
                                       _model.textController2.text,
-                                      'Alarme Alarm',
+                                      'Alarme',
                                     ),
                                     valueOrDefault<String>(
                                       _model.textController1.text,
