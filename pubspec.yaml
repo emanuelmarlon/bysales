@@ -29,8 +29,6 @@ dependencies:
   assets_audio_player: 3.1.1
   assets_audio_player_web: 3.1.1
   auto_size_text: 3.0.0
-  awesome_notifications: ^0.9.3+1
-  build_runner: ^2.3.0
   cached_network_image: 3.3.1
   collection: 1.18.0
   dropdown_button2: 2.3.9
@@ -71,7 +69,6 @@ dependencies:
 
 dependency_overrides:
   http: 1.2.1
-  intl: ^0.19.0
   uuid: ^4.0.0
 
 dev_dependencies:
