@@ -593,6 +593,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 'Disparando alarme',
                                 _model.data,
                               );
+                              unawaited(
+                                () async {}(),
+                              );
                               context.safePop();
                               ScaffoldMessenger.of(context).clearSnackBars();
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -609,9 +612,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).primary,
                                 ),
-                              );
-                              unawaited(
-                                () async {}(),
                               );
                               unawaited(
                                 () async {}(),
