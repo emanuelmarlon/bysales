@@ -604,7 +604,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       FlutterFlowTheme.of(context).primary,
                                 ),
                               );
-                              await actions.notificacao(
+                              unawaited(
+                                () async {}(),
+                              );
+                              await actions.notificacao2(
                                 valueOrDefault<String>(
                                   _model.textController2.text,
                                   'Alarme',

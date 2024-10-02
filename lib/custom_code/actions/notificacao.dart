@@ -16,21 +16,23 @@ void main() {
 }
 
 void inicializarNotificacoes() {
+  // Inicializando AwesomeNotifications e criando o canal
   AwesomeNotifications().initialize(
-    'resource://drawable/res_app_icon', // Caminho do ícone da notificação
-    [
-      NotificationChannel(
-        channelKey: 'basic_channel',
-        channelName: 'Notificações Básicas',
-        channelDescription: 'Canal para notificações básicas',
-        defaultColor: Color(0xFF9D50DD),
-        ledColor: Colors.white,
-        importance:
-            NotificationImportance.High, // Alta prioridade para notificações
-        channelShowBadge: true, // Mostra ícone na barra de status
-      ),
-    ],
-  );
+      'resource://drawable/res_app_icon', // Caminho do ícone da notificação
+      [
+        NotificationChannel(
+          channelKey: 'basic_channel',
+          channelName: 'Notificações Básicas',
+          channelDescription: 'Canal para notificações básicas',
+          defaultColor: Color(0xFF9D50DD),
+          ledColor: Colors.white,
+          importance:
+              NotificationImportance.High, // Alta prioridade para notificações
+          channelShowBadge: true, // Mostra ícone na barra de status
+        ),
+      ],
+      // Permitir solicitações de permissão automaticamente
+      debug: true);
 }
 
 class MyApp extends StatelessWidget {
@@ -56,10 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    // Verificando as permissões de notificação
+    // Verificando se as permissões de notificação estão permitidas
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
-        // Se as notificações não forem permitidas, solicita ao usuário
+        // Solicita permissão de notificação ao usuário
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
     });
@@ -71,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'Esta é uma mensagem de teste',
       DateTime.now()
           .add(Duration(seconds: 5)), // Agendando para daqui 5 segundos
-      1, // ID único
+      1, // ID único da notificação
     );
   }
 
@@ -97,11 +99,11 @@ Future<void> notificacao(
   DateTime dateAgendamento,
   int id,
 ) async {
-  // Cria a notificação com agendamento
+  // Criando a notificação com agendamento
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: id, // ID único para a notificação
-      channelKey: 'basic_channel', // Defina uma chave de canal de notificação
+      channelKey: 'basic_channel', // Chave do canal de notificação
       title: title,
       body: mensagem,
       notificationLayout: NotificationLayout.Default,
@@ -110,7 +112,7 @@ Future<void> notificacao(
       NotificationActionButton(
         key: 'CANCELAR', // Identificador do botão
         label: 'Cancelar', // Nome do botão
-        autoDismissible: true, // Define se o botão cancela a notificação
+        autoDismissible: true, // Botão cancela a notificação
       ),
     ],
     schedule: NotificationCalendar(
@@ -121,7 +123,7 @@ Future<void> notificacao(
       minute: dateAgendamento.minute,
       second: 0,
       allowWhileIdle:
-          true, // Permite notificação mesmo em modo de economia de energia
+          true, // Permite notificação em modo de economia de energia
     ),
   );
 }
