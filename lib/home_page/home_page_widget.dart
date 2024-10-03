@@ -455,6 +455,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         Expanded(
                           child: FFButtonWidget(
                             onPressed: () async {
+                              await actions
+                                  .checkAndroidScheduleExactAlarmPermission();
                               final datePickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: getCurrentTimestamp,

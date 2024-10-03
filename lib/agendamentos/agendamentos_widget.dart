@@ -333,32 +333,40 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                     size: 48.0,
                                                   ),
                                                 ),
-                                                InkWell(
-                                                  splashColor:
-                                                      Colors.transparent,
-                                                  focusColor:
-                                                      Colors.transparent,
-                                                  hoverColor:
-                                                      Colors.transparent,
-                                                  highlightColor:
-                                                      Colors.transparent,
-                                                  onTap: () async {
-                                                    await actions
-                                                        .pararalarmeCopy(
-                                                      valueOrDefault<int>(
-                                                        agendamentosItem.id,
-                                                        1,
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Icon(
-                                                    Icons.stop,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primary,
-                                                    size: 48.0,
+                                                if (responsiveVisibility(
+                                                  context: context,
+                                                  phone: false,
+                                                  tablet: false,
+                                                  tabletLandscape: false,
+                                                  desktop: false,
+                                                ))
+                                                  InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      await actions
+                                                          .pararalarmeCopy(
+                                                        valueOrDefault<int>(
+                                                          agendamentosItem.id,
+                                                          1,
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Icon(
+                                                      Icons.stop,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                      size: 48.0,
+                                                    ),
                                                   ),
-                                                ),
                                               ],
                                             ),
                                           ],
