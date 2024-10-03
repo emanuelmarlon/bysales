@@ -457,6 +457,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             onPressed: () async {
                               await actions
                                   .checkAndroidScheduleExactAlarmPermission();
+                              await actions.concederPermissao();
                               final datePickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: getCurrentTimestamp,
