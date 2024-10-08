@@ -8,7 +8,10 @@ import '/flutter_flow/form_field_controller.dart';
 import 'dart:async';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/random_data_util.dart' as random_data;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
 
@@ -61,7 +64,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -78,7 +81,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
               ),
               Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
+                alignment: AlignmentDirectional(0.0, 0.0),
                 child: Text(
                   'Agendamento',
                   style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -91,16 +94,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
             ],
           ),
-          actions: const [],
+          actions: [],
           centerTitle: false,
           elevation: 2.0,
         ),
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: const AlignmentDirectional(0.0, 0.0),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
+              padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -108,7 +111,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   if (_model.data != null)
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -138,13 +141,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: SizedBox(
+                          child: Container(
                             width: 200.0,
                             child: TextFormField(
                               controller: _model.textController1,
@@ -167,14 +170,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       letterSpacing: 0.0,
                                     ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
@@ -216,13 +219,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: SizedBox(
+                          child: Container(
                             width: 200.0,
                             child: TextFormField(
                               controller: _model.textController2,
@@ -245,14 +248,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       letterSpacing: 0.0,
                                     ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
@@ -294,7 +297,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -313,7 +316,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           value: _model.switchVibrarValue!,
                           onChanged: (newValue) async {
                             safeSetState(
-                                () => _model.switchVibrarValue = newValue);
+                                () => _model.switchVibrarValue = newValue!);
                           },
                           activeColor: FlutterFlowTheme.of(context).primary,
                           activeTrackColor:
@@ -328,7 +331,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -347,7 +350,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           value: _model.switchAudioValue!,
                           onChanged: (newValue) async {
                             safeSetState(
-                                () => _model.switchAudioValue = newValue);
+                                () => _model.switchAudioValue = newValue!);
                           },
                           activeColor: FlutterFlowTheme.of(context).primary,
                           activeTrackColor:
@@ -362,7 +365,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -378,7 +381,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                         ),
                         SliderTheme(
-                          data: const SliderThemeData(
+                          data: SliderThemeData(
                             showValueIndicator: ShowValueIndicator.always,
                           ),
                           child: Slider(
@@ -402,7 +405,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -411,7 +414,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           child: FlutterFlowDropDown<String>(
                             controller: _model.dropDownValueController ??=
                                 FormFieldController<String>(null),
-                            options: const ['Audio 1', 'Audio 2', 'Audio 3'],
+                            options: ['Audio 1', 'Audio 2', 'Audio 3'],
                             onChanged: (val) =>
                                 safeSetState(() => _model.dropDownValue = val),
                             width: 200.0,
@@ -434,7 +437,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             borderColor: Colors.transparent,
                             borderWidth: 0.0,
                             borderRadius: 8.0,
-                            margin: const EdgeInsetsDirectional.fromSTEB(
+                            margin: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 12.0, 0.0),
                             hidesUnderline: true,
                             isOverButton: false,
@@ -447,7 +450,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(8.0, 20.0, 8.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -457,7 +460,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             onPressed: () async {
                               await actions
                                   .checkAndroidScheduleExactAlarmPermission();
-                              final datePickedDate = await showDatePicker(
+                              final _datePickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: getCurrentTimestamp,
                                 firstDate: getCurrentTimestamp,
@@ -497,9 +500,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 },
                               );
 
-                              TimeOfDay? datePickedTime;
-                              if (datePickedDate != null) {
-                                datePickedTime = await showTimePicker(
+                              TimeOfDay? _datePickedTime;
+                              if (_datePickedDate != null) {
+                                _datePickedTime = await showTimePicker(
                                   context: context,
                                   initialTime: TimeOfDay.fromDateTime(
                                       getCurrentTimestamp),
@@ -539,15 +542,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 );
                               }
 
-                              if (datePickedDate != null &&
-                                  datePickedTime != null) {
+                              if (_datePickedDate != null &&
+                                  _datePickedTime != null) {
                                 safeSetState(() {
                                   _model.datePicked = DateTime(
-                                    datePickedDate.year,
-                                    datePickedDate.month,
-                                    datePickedDate.day,
-                                    datePickedTime!.hour,
-                                    datePickedTime.minute,
+                                    _datePickedDate.year,
+                                    _datePickedDate.month,
+                                    _datePickedDate.day,
+                                    _datePickedTime!.hour,
+                                    _datePickedTime.minute,
                                   );
                                 });
                               }
@@ -627,7 +630,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       fontSize: 16.0,
                                     ),
                                   ),
-                                  duration: const Duration(milliseconds: 3000),
+                                  duration: Duration(milliseconds: 3000),
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).primary,
                                 ),
@@ -636,9 +639,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             text: 'Agendar alarme',
                             options: FFButtonOptions(
                               height: 40.0,
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 16.0, 0.0),
-                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                              iconPadding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
                               color: FlutterFlowTheme.of(context).primary,
                               textStyle: FlutterFlowTheme.of(context)

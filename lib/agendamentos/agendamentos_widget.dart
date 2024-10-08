@@ -1,9 +1,12 @@
+import '/backend/schema/structs/index.dart';
 import '/components/emp_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'agendamentos_model.dart';
 export 'agendamentos_model.dart';
@@ -45,7 +48,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         floatingActionButton: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
           child: FloatingActionButton(
             onPressed: () async {
               context.pushNamed('HomePage');
@@ -63,7 +66,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
           title: Align(
-            alignment: const AlignmentDirectional(0.0, 0.0),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Text(
               'Agendamentos',
               style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -74,7 +77,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                   ),
             ),
           ),
-          actions: const [],
+          actions: [],
           centerTitle: false,
           elevation: 2.0,
         ),
@@ -93,7 +96,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Builder(
                       builder: (context) {
                         final agendamentos = FFAppState()
@@ -101,8 +104,8 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                             .sortedList(keyOf: (e) => e.data!, desc: true)
                             .toList();
                         if (agendamentos.isEmpty) {
-                          return const Center(
-                            child: SizedBox(
+                          return Center(
+                            child: Container(
                               width: 300.0,
                               height: 300.0,
                               child: EmpWidget(),
@@ -111,7 +114,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                         }
 
                         return ListView.separated(
-                          padding: const EdgeInsets.fromLTRB(
+                          padding: EdgeInsets.fromLTRB(
                             0,
                             0,
                             0,
@@ -120,12 +123,12 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: agendamentos.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 8.0),
+                          separatorBuilder: (_, __) => SizedBox(height: 8.0),
                           itemBuilder: (context, agendamentosIndex) {
                             final agendamentosItem =
                                 agendamentos[agendamentosIndex];
                             return Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 10.0, 10.0, 0.0),
                               child: Material(
                                 color: Colors.transparent,
@@ -154,7 +157,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     8.0, 0.0, 0.0, 0.0),
                                             child: Text(
                                               agendamentosItem.titulo,
@@ -174,7 +177,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                         ],
                                       ),
                                       Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             8.0, 8.0, 8.0, 8.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
@@ -212,7 +215,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsetsDirectional
+                                                          EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   8.0,
                                                                   0.0,
@@ -263,7 +266,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                               builder:
                                                                   (alertDialogContext) {
                                                                 return AlertDialog(
-                                                                  title: const Text(
+                                                                  title: Text(
                                                                       'Alarme'),
                                                                   content: Text(
                                                                       'Tem certeza que deseja excluir o alarme ${agendamentosItem.titulo}?'),
@@ -272,14 +275,14 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                                       onPressed: () => Navigator.pop(
                                                                           alertDialogContext,
                                                                           false),
-                                                                      child: const Text(
+                                                                      child: Text(
                                                                           'Cancelar'),
                                                                     ),
                                                                     TextButton(
                                                                       onPressed: () => Navigator.pop(
                                                                           alertDialogContext,
                                                                           true),
-                                                                      child: const Text(
+                                                                      child: Text(
                                                                           'Confirmar'),
                                                                     ),
                                                                   ],

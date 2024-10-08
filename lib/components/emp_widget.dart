@@ -1,8 +1,12 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'emp_model.dart';
 export 'emp_model.dart';
 
@@ -58,7 +62,7 @@ class _EmpWidgetState extends State<EmpWidget> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: const AlignmentDirectional(0.0, 0.0),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -68,7 +72,7 @@ class _EmpWidgetState extends State<EmpWidget> with TickerProviderStateMixin {
             size: 72.0,
           ).animateOnPageLoad(animationsMap['iconOnPageLoadAnimation']!),
           Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
             child: Text(
               'Sem alarmes',
               style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -78,7 +82,7 @@ class _EmpWidgetState extends State<EmpWidget> with TickerProviderStateMixin {
             ),
           ),
           Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
             child: Text(
               'Lista de alarmes vazia',
               textAlign: TextAlign.center,
