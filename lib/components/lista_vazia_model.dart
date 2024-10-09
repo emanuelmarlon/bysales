@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'agendamentos_widget.dart' show AgendamentosWidget;
+import 'lista_vazia_widget.dart' show ListaVaziaWidget;
 import 'package:flutter/material.dart';
 
-class AgendamentosModel extends FlutterFlowModel<AgendamentosWidget> {
+class ListaVaziaModel extends FlutterFlowModel<ListaVaziaWidget> {
   @override
   void initState(BuildContext context) {}
 

@@ -1,20 +1,9 @@
-import '/backend/schema/structs/index.dart';
-import '/flutter_flow/flutter_flow_audio_player.dart';
-import '/flutter_flow/flutter_flow_drop_down.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'dart:async';
-import '/custom_code/actions/index.dart' as actions;
-import '/flutter_flow/random_data_util.dart' as random_data;
-import 'home_page_widget.dart' show HomePageWidget;
-import 'package:flutter/foundation.dart';
+import 'agendar_widget.dart' show AgendarWidget;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
-class HomePageModel extends FlutterFlowModel<HomePageWidget> {
+class AgendarModel extends FlutterFlowModel<AgendarWidget> {
   ///  Local state fields for this page.
 
   DateTime? data;
@@ -22,6 +11,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   int? id;
 
   String? string;
+
+  String? audio;
 
   ///  State fields for stateful widgets in this page.
 
@@ -33,15 +24,15 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   FocusNode? textFieldFocusNode2;
   TextEditingController? textController2;
   String? Function(BuildContext, String?)? textController2Validator;
+  // State field(s) for DropDown widget.
+  String? dropDownValue;
+  FormFieldController<String>? dropDownValueController;
   // State field(s) for SwitchVibrar widget.
   bool? switchVibrarValue;
   // State field(s) for SwitchAudio widget.
   bool? switchAudioValue;
   // State field(s) for SliderVolume widget.
   double? sliderVolumeValue;
-  // State field(s) for DropDown widget.
-  String? dropDownValue;
-  FormFieldController<String>? dropDownValueController;
   DateTime? datePicked;
 
   @override
