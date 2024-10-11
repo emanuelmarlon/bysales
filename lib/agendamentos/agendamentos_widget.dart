@@ -1,8 +1,10 @@
 import '/components/lista_vazia_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'agendamentos_model.dart';
 export 'agendamentos_model.dart';
@@ -14,15 +16,25 @@ class AgendamentosWidget extends StatefulWidget {
   State<AgendamentosWidget> createState() => _AgendamentosWidgetState();
 }
 
-class _AgendamentosWidgetState extends State<AgendamentosWidget> {
+class _AgendamentosWidgetState extends State<AgendamentosWidget>
+    with TickerProviderStateMixin {
   late AgendamentosModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => AgendamentosModel());
+
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: null,
+      ),
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
@@ -155,19 +167,49 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                         Row(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            Text(
-                                              agendamentosItem.titulo,
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodyMedium
-                                                  .override(
-                                                    fontFamily: 'Inter',
-                                                    color: FlutterFlowTheme.of(
+                                            Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  agendamentosItem.titulo,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily: 'Inter',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 4.0, 0.0, 0.0),
+                                                  child: Text(
+                                                    agendamentosItem.mensagem,
+                                                    style: FlutterFlowTheme.of(
                                                             context)
-                                                        .primary,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.w600,
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily: 'Inter',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primary,
+                                                          fontSize: 12.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
                                                   ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -222,7 +264,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                                     0.0),
                                                         child: Text(
                                                           dateTimeFormat(
-                                                            "hh:mm",
+                                                            "Hm",
                                                             agendamentosItem
                                                                 .data!,
                                                             locale: FFLocalizations
@@ -248,71 +290,79 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                               Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: [
-                                                  InkWell(
-                                                    splashColor:
-                                                        Colors.transparent,
-                                                    focusColor:
-                                                        Colors.transparent,
-                                                    hoverColor:
-                                                        Colors.transparent,
-                                                    highlightColor:
-                                                        Colors.transparent,
-                                                    onTap: () async {
-                                                      var confirmDialogResponse =
-                                                          await showDialog<
-                                                                  bool>(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (alertDialogContext) {
-                                                                  return AlertDialog(
-                                                                    title: const Text(
-                                                                        'Alarme'),
-                                                                    content: Text(
-                                                                        'Tem certeza que deseja excluir o alarme ${agendamentosItem.titulo}?'),
-                                                                    actions: [
-                                                                      TextButton(
-                                                                        onPressed: () => Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                        child: const Text(
-                                                                            'Cancelar'),
-                                                                      ),
-                                                                      TextButton(
-                                                                        onPressed: () => Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                        child: const Text(
-                                                                            'Confirmar'),
-                                                                      ),
-                                                                    ],
-                                                                  );
-                                                                },
-                                                              ) ??
-                                                              false;
-                                                      if (confirmDialogResponse) {
-                                                        FFAppState()
-                                                            .removeFromAlarme(
-                                                                agendamentosItem);
-                                                        safeSetState(() {});
-                                                        await actions
-                                                            .pararalarme(
-                                                          valueOrDefault<int>(
-                                                            agendamentosItem.id,
-                                                            1,
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    child: Icon(
-                                                      Icons.delete_sharp,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                      size: 36.0,
+                                                  if (responsiveVisibility(
+                                                    context: context,
+                                                    phone: false,
+                                                    tablet: false,
+                                                    tabletLandscape: false,
+                                                    desktop: false,
+                                                  ))
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        var confirmDialogResponse =
+                                                            await showDialog<
+                                                                    bool>(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (alertDialogContext) {
+                                                                    return AlertDialog(
+                                                                      title: const Text(
+                                                                          'Alarme'),
+                                                                      content: Text(
+                                                                          'Tem certeza que deseja excluir o alarme ${agendamentosItem.titulo}?'),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed: () => Navigator.pop(
+                                                                              alertDialogContext,
+                                                                              false),
+                                                                          child:
+                                                                              const Text('Cancelar'),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed: () => Navigator.pop(
+                                                                              alertDialogContext,
+                                                                              true),
+                                                                          child:
+                                                                              const Text('Confirmar'),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                ) ??
+                                                                false;
+                                                        if (confirmDialogResponse) {
+                                                          FFAppState()
+                                                              .removeFromAlarme(
+                                                                  agendamentosItem);
+                                                          safeSetState(() {});
+                                                          await actions
+                                                              .pararalarme(
+                                                            valueOrDefault<int>(
+                                                              agendamentosItem
+                                                                  .id,
+                                                              1,
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      child: Icon(
+                                                        Icons.delete_sharp,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
+                                                        size: 36.0,
+                                                      ),
                                                     ),
-                                                  ),
                                                   InkWell(
                                                     splashColor:
                                                         Colors.transparent,
@@ -326,6 +376,10 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                                       await actions.pararalarme(
                                                         agendamentosItem.id,
                                                       );
+                                                      FFAppState()
+                                                          .removeFromAlarme(
+                                                              agendamentosItem);
+                                                      safeSetState(() {});
                                                     },
                                                     child: Icon(
                                                       Icons.stop,
@@ -379,6 +433,20 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget> {
                                     ),
                                   ),
                                 ),
+                              ).animateOnPageLoad(
+                                animationsMap['containerOnPageLoadAnimation']!,
+                                effects: [
+                                  MoveEffect(
+                                    curve: Curves.easeInOut,
+                                    delay: valueOrDefault<double>(
+                                      agendamentosIndex * 100,
+                                      0.0,
+                                    ).ms,
+                                    duration: 600.0.ms,
+                                    begin: const Offset(-400.0, 0.0),
+                                    end: const Offset(0.0, 0.0),
+                                  ),
+                                ],
                               ),
                             );
                           },
