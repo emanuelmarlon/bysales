@@ -9,13 +9,13 @@ import 'package:flutter/material.dart';
 
 import 'package:alarm/alarm.dart';
 
-// Função de redirecionamento fornecida pelo FlutterFlow
-Future redirecionarPagina(
-  BuildContext context,
-  String pagina,
-) async {
-  // Use o método de navegação do FlutterFlow
-  context.pushNamed(pagina); // Redireciona para a página especificada
+// Função que retorna true se o alarme estiver ativo (tocando) e false caso contrário
+Future<bool> redirecionarPagina() async {
+  // Verifique o estado do alarme e retorne true se o alarme estiver tocando
+  bool isRinging = Alarm.ringStream.hasListener;
+
+  // Retorna true se o alarme estiver ativo, senão false
+  return isRinging;
 }
 
 class HomePage extends StatefulWidget {
@@ -24,23 +24,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool alarmeAtivo = false;
-
   @override
   void initState() {
     super.initState();
 
-    // Escutar o evento de toque do alarme
-    Alarm.ringStream.stream.listen((_) {
-      // Quando o alarme tocar, definir a flag como true e redirecionar
-      setState(() {
-        alarmeAtivo = true;
-      });
-
-      if (alarmeAtivo) {
-        // Agora, você pode chamar a função de redirecionamento personalizada
-        redirecionarPagina(
-            context, 'AlarmPage'); // Use a rota nomeada do FlutterFlow
+    // Exemplo de uso da função para verificar se o alarme está tocando
+    redirecionarPagina().then((isRinging) {
+      if (isRinging) {
+        // O alarme está tocando, fazer algo (ex: notificar o usuário)
+        print("O alarme está tocando!");
+      } else {
+        // O alarme não está tocando
+        print("O alarme não está tocando.");
       }
     });
   }

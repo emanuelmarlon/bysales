@@ -32,10 +32,10 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await actions.redirecionarPagina(
-        context,
-        'agendar',
-      );
+      _model.alarme = await actions.redirecionarPagina();
+      if (_model.alarme == true) {
+        context.pushNamed('agendar');
+      }
     });
 
     animationsMap.addAll({
