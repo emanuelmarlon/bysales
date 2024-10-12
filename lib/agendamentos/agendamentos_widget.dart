@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'agendamentos_model.dart';
@@ -28,6 +29,14 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => AgendamentosModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await actions.redirecionarPagina(
+        context,
+        'agendar',
+      );
+    });
 
     animationsMap.addAll({
       'containerOnPageLoadAnimation': AnimationInfo(
