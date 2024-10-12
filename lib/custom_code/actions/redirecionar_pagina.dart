@@ -9,9 +9,13 @@ import 'package:flutter/material.dart';
 
 import 'package:alarm/alarm.dart';
 
-Future<void> redirecionarPagina(BuildContext context, String pagina) async {
-  // Redireciona para a página passada como parâmetro
-  context.pushNamed(pagina);
+// Função de redirecionamento fornecida pelo FlutterFlow
+Future redirecionarPagina(
+  BuildContext context,
+  String pagina,
+) async {
+  // Use o método de navegação do FlutterFlow
+  context.pushNamed(pagina); // Redireciona para a página especificada
 }
 
 class HomePage extends StatefulWidget {
@@ -20,15 +24,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool alarmeAtivo = false;
+
   @override
   void initState() {
     super.initState();
 
-    // Verifica se o alarme foi disparado
+    // Escutar o evento de toque do alarme
     Alarm.ringStream.stream.listen((_) {
-      // Redireciona para a página de alarme quando o alarme tocar
-      redirecionarPagina(
-          context, 'AlarmPage'); // Use a rota nomeada do FlutterFlow
+      // Quando o alarme tocar, definir a flag como true e redirecionar
+      setState(() {
+        alarmeAtivo = true;
+      });
+
+      if (alarmeAtivo) {
+        // Agora, você pode chamar a função de redirecionamento personalizada
+        redirecionarPagina(
+            context, 'AlarmPage'); // Use a rota nomeada do FlutterFlow
+      }
     });
   }
 
