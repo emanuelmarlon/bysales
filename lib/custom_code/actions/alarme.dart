@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wakelock_plus/wakelock_plus.dart'; // Importando o pacote wakelock_plus
 
 class AlarmStorage {
   static late SharedPreferences prefs;
@@ -45,9 +46,8 @@ Future<void> alarme(
     notificationTitle: titulo, // Utiliza o título fornecido para a notificação
     notificationBody:
         notificationbody, // Utiliza o corpo da notificação fornecido
-
     enableNotificationOnKill: true,
-    androidFullScreenIntent: true,
+    androidFullScreenIntent: true, // Habilita o modo tela cheia
   );
 
   // Agendar o alarme usando as configurações criadas
@@ -75,6 +75,9 @@ void main() async {
     0.5, // volume: Volume do alarme (de 0.0 a 1.0)
     'assets/audios/alarm.mp3', // Caminho do arquivo de áudio personalizado
   );
+
+  // Mantém a tela ligada quando o alarme disparar
+  WakelockPlus.enable();
 
   runApp(MyApp());
 }
