@@ -9,42 +9,19 @@ import 'package:flutter/material.dart';
 
 import 'package:alarm/alarm.dart';
 
-// Função que retorna true se o alarme estiver ativo (tocando) e false caso contrário
 Future<bool> redirecionarPagina() async {
-  // Verifique o estado do alarme e retorne true se o alarme estiver tocando
-  bool isRinging = Alarm.ringStream.hasListener;
+  bool isRinging = false;
 
-  // Retorna true se o alarme estiver ativo, senão false
+  // Cria um listener para a stream de alarme
+  final Stream<AlarmSettings> alarmStream = Alarm.ringStream.stream;
+
+  // Escuta a stream de alarme
+  alarmStream.listen((_) {
+    isRinging = true; // O alarme está tocando
+  });
+
+  // Aguarda um tempo para dar chance ao alarme de tocar
+  await Future.delayed(Duration(seconds: 1));
+
   return isRinging;
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-
-    // Exemplo de uso da função para verificar se o alarme está tocando
-    redirecionarPagina().then((isRinging) {
-      if (isRinging) {
-        // O alarme está tocando, fazer algo (ex: notificar o usuário)
-        print("O alarme está tocando!");
-      } else {
-        // O alarme não está tocando
-        print("O alarme não está tocando.");
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Página Inicial")),
-      body: Center(child: Text("Bem-vindo à página inicial!")),
-    );
-  }
 }
