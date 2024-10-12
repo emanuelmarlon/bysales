@@ -35,6 +35,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
         await actions.inicializarWakelok();
+        await actions.sobrepor();
 
         context.pushNamed('agendar');
       }
