@@ -11,5 +11,6 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 Future inicializarWakelok() async {
   // Add your function code here!
+  WidgetsFlutterBinding.ensureInitialized();
   WakelockPlus.enable();
 }
