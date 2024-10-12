@@ -8,3 +8,4 @@ export 'solicitar_permissao.dart' show solicitarPermissao;
 export 'inicializar_alarm.dart' show inicializarAlarm;
 export 'redirecionar_pagina.dart' show redirecionarPagina;
 export 'inicializar_wakelok.dart' show inicializarWakelok;
+export 'sobrepor.dart' show sobrepor;

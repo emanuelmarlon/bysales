@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wakelock_plus/wakelock_plus.dart'; // Importando o pacote wakelock_plus
+import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:flutter_show_when_locked/flutter_show_when_locked.dart'; // Importando o pacote
 
 class AlarmStorage {
   static late SharedPreferences prefs;
@@ -98,4 +99,15 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+// Função que será chamada quando o alarme disparar
+void onAlarmTriggered() async {
+  await sobrepor();
+  // Aqui você pode adicionar qualquer outra lógica que deseja executar quando o alarme tocar
+}
+
+// Função para mostrar a tela sobre o bloqueio
+Future sobrepor() async {
+  await FlutterShowWhenLocked().show();
 }
