@@ -1,5 +1,6 @@
 export 'alarme.dart' show alarme;
 export 'pararalarme.dart' show pararalarme;
+export 'apagar_tela.dart' show apagarTela;
 export 'pararalarme_copy.dart' show pararalarmeCopy;
 export 'pararalarme_copy2.dart' show pararalarmeCopy2;
 export 'ascender_tela.dart' show ascenderTela;
@@ -10,3 +11,4 @@ export 'inicializar_alarm.dart' show inicializarAlarm;
 export 'redirecionar_pagina.dart' show redirecionarPagina;
 export 'inicializar_wakelok.dart' show inicializarWakelok;
 export 'sobrepor.dart' show sobrepor;
+export 'wakelockplugin001.dart' show wakelockplugin001;

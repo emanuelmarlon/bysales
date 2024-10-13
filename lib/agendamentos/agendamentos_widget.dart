@@ -36,8 +36,26 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
       if (_model.alarme == true) {
         await actions.sobrepor();
         await actions.ascenderTela();
+        await actions.wakelockplugin001();
+        await Future.delayed(const Duration(milliseconds: 3000));
 
         context.pushNamed('agendar');
+
+        context.safePop();
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              content: const Text('Seu alarme disparou.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: const Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
       }
     });
 

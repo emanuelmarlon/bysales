@@ -810,6 +810,7 @@ class _AgendarWidgetState extends State<AgendarWidget> {
                                     );
                                   }(),
                                 );
+                                await actions.apagarTela();
                                 context.safePop();
                                 ScaffoldMessenger.of(context).clearSnackBars();
                                 ScaffoldMessenger.of(context).showSnackBar(

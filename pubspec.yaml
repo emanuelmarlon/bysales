@@ -26,6 +26,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   alarm: ^3.1.5
+  android_power_manager: ^1.0.0
   audio_session: 0.1.16
   auto_size_text: 3.0.0
   build_runner: ^2.4.11
@@ -63,6 +64,7 @@ dependencies:
   url_launcher_android: 6.3.4
   url_launcher_ios: 6.3.1
   url_launcher_platform_interface: 2.3.2
+  wakelock_plugin: ^0.0.1
   wakelock_plus: ^1.2.8
 
   # The following adds the Cupertino Icons font to your application.
