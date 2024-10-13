@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-Future inicializarWakelok() async {
+Future ascenderTela() async {
   // Add your function code here!
-  WidgetsFlutterBinding.ensureInitialized();
+  await WakelockPlus.enable();
 }
