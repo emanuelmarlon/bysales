@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:keep_screen_on/keep_screen_on.dart';
 
-Future ligaTela() async {
+Future desligaTela() async {
   // Add your function code here!
-  await KeepScreenOn.turnOn();
+  KeepScreenOn.turnOn(on: false);
 }

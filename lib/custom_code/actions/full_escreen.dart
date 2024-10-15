@@ -7,9 +7,14 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:keep_screen_on/keep_screen_on.dart';
+import 'package:fullscreen_window/fullscreen_window.dart';
 
-Future ligaTela() async {
-  // Add your function code here!
-  await KeepScreenOn.turnOn();
+Future<void> fullEscreen() async {
+  try {
+    // Ativar o modo de tela cheia
+    await FullScreenWindow.setFullScreen(true);
+    print("Modo de tela cheia ativado.");
+  } catch (e) {
+    print("Erro ao ativar o modo de tela cheia: $e");
+  }
 }

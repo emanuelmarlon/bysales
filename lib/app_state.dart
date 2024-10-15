@@ -33,6 +33,12 @@ class FFAppState extends ChangeNotifier {
               .toList() ??
           _alarme;
     });
+    _safeInit(() {
+      _idUsuario = prefs.getInt('ff_idUsuario') ?? _idUsuario;
+    });
+    _safeInit(() {
+      _nomeUsuario = prefs.getString('ff_nomeUsuario') ?? _nomeUsuario;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -80,6 +86,20 @@ class FFAppState extends ChangeNotifier {
     alarme.insert(index, value);
     prefs.setStringList(
         'ff_alarme', _alarme.map((x) => x.serialize()).toList());
+  }
+
+  int _idUsuario = 0;
+  int get idUsuario => _idUsuario;
+  set idUsuario(int value) {
+    _idUsuario = value;
+    prefs.setInt('ff_idUsuario', value);
+  }
+
+  String _nomeUsuario = '';
+  String get nomeUsuario => _nomeUsuario;
+  set nomeUsuario(String value) {
+    _nomeUsuario = value;
+    prefs.setString('ff_nomeUsuario', value);
   }
 }
 

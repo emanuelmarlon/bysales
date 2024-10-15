@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:flutter_show_when_locked/flutter_show_when_locked.dart';
 import 'package:keep_screen_on/keep_screen_on.dart';
 
 class AlarmStorage {
@@ -54,25 +53,6 @@ Future<void> alarme(
   }
 }
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await AlarmStorage.init();
-
-  DateTime alarmeData = DateTime.now().add(const Duration(seconds: 10));
-  await alarme(
-    alarmeData,
-    1,
-    'Lembrete',
-    'É hora de fazer uma pausa!',
-    true,
-    true,
-    0.5,
-    'assets/audios/alarm.mp3',
-  );
-
-  runApp(MyApp());
-}
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -92,12 +72,12 @@ class MyApp extends StatelessWidget {
 
 // Esta função será chamada quando o aplicativo for trazido para a frente ou o usuário tocar na notificação
 void onNotificationReceived() async {
-  await sobrepor(); // Exibe a tela mesmo bloqueada
-  await WakelockPlus.enable(); // Mantém a tela ligada
-  KeepScreenOn.turnOn(); // Garante que a tela não se apague
+  await WakelockPlus.enable();
+  await KeepScreenOn.turnOn();
+  // Funções de controle de tela foram removidas, já que são controladas na página
 }
 
-// Função para sobrepor a tela bloqueada
-Future<void> sobrepor() async {
-  await FlutterShowWhenLocked().show(); // Permite sobrepor a tela bloqueada
-}
+// Função para sobrepor a tela bloqueada (Comentada)
+//Future<void> sobrepor() async {
+//await FlutterShowWhenLocked().show(); // Permite sobrepor a tela bloqueada
+//}

@@ -646,6 +646,7 @@ class _AgendarWidgetState extends State<AgendarWidget> {
                           Expanded(
                             child: FFButtonWidget(
                               onPressed: () async {
+                                await actions.fullEscreen();
                                 await actions.solicitarPermissao();
                                 final datePickedDate = await showDatePicker(
                                   context: context,

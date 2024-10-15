@@ -1,3 +1,4 @@
+import '/components/alarme_widget.dart';
 import '/components/lista_vazia_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -34,10 +35,22 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
-        await actions.sobrepor();
-        await actions.ligaTela();
-
-        context.pushNamed('agendar');
+        await showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          isDismissible: false,
+          enableDrag: false,
+          context: context,
+          builder: (context) {
+            return GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Padding(
+                padding: MediaQuery.viewInsetsOf(context),
+                child: const AlarmeWidget(),
+              ),
+            );
+          },
+        ).then((value) => safeSetState(() {}));
       }
     });
 
@@ -388,6 +401,10 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
                                                       await actions.pararalarme(
                                                         agendamentosItem.id,
                                                       );
+                                                      await actions
+                                                          .apagarTela();
+                                                      await actions
+                                                          .desligaTela();
                                                       FFAppState()
                                                           .removeFromAlarme(
                                                               agendamentosItem);

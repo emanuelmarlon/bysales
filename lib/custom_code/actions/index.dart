@@ -9,9 +9,12 @@ export 'check_android_schedule_exact_alarm_permission.dart'
 export 'solicitar_permissao.dart' show solicitarPermissao;
 export 'inicializar_alarm.dart' show inicializarAlarm;
 export 'redirecionar_pagina.dart' show redirecionarPagina;
+export 'desliga_tela.dart' show desligaTela;
 export 'inicializar_wakelok.dart' show inicializarWakelok;
 export 'sobrepor.dart' show sobrepor;
 export 'wakelockplugin001.dart' show wakelockplugin001;
 export 'local_notification.dart' show localNotification;
 export 'ativa_tela.dart' show ativaTela;
 export 'liga_tela.dart' show ligaTela;
+export 'criar_alarme.dart' show criarAlarme;
+export 'full_escreen.dart' show fullEscreen;
