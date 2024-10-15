@@ -12,3 +12,6 @@ export 'redirecionar_pagina.dart' show redirecionarPagina;
 export 'inicializar_wakelok.dart' show inicializarWakelok;
 export 'sobrepor.dart' show sobrepor;
 export 'wakelockplugin001.dart' show wakelockplugin001;
+export 'local_notification.dart' show localNotification;
+export 'ativa_tela.dart' show ativaTela;
+export 'liga_tela.dart' show ligaTela;

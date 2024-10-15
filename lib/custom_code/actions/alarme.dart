@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:flutter_show_when_locked/flutter_show_when_locked.dart'; // Importando o pacote
+import 'package:flutter_show_when_locked/flutter_show_when_locked.dart';
+import 'package:keep_screen_on/keep_screen_on.dart';
 
 class AlarmStorage {
   static late SharedPreferences prefs;
@@ -42,7 +43,7 @@ Future<void> alarme(
     notificationTitle: titulo,
     notificationBody: notificationbody,
     enableNotificationOnKill: true,
-    androidFullScreenIntent: true,
+    androidFullScreenIntent: true, // Ativa a tela com notificação em tela cheia
   );
 
   try {
@@ -89,11 +90,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void onAlarmTriggered() async {
-  await sobrepor();
-  await WakelockPlus.enable();
+// Esta função será chamada quando o aplicativo for trazido para a frente ou o usuário tocar na notificação
+void onNotificationReceived() async {
+  await sobrepor(); // Exibe a tela mesmo bloqueada
+  await WakelockPlus.enable(); // Mantém a tela ligada
+  KeepScreenOn.turnOn(); // Garante que a tela não se apague
 }
 
+// Função para sobrepor a tela bloqueada
 Future<void> sobrepor() async {
-  await FlutterShowWhenLocked().show();
+  await FlutterShowWhenLocked().show(); // Permite sobrepor a tela bloqueada
 }

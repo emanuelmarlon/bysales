@@ -15,6 +15,8 @@ void main() async {
 
   // Start initial custom actions code
   await actions.inicializarAlarm();
+  await actions.sobrepor();
+  await actions.ligaTela();
   await actions.inicializarWakelok();
   // End initial custom actions code
 
