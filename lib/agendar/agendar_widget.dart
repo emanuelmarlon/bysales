@@ -4,7 +4,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'dart:async';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/random_data_util.dart' as random_data;
 import 'package:flutter/material.dart';
@@ -773,47 +772,42 @@ class _AgendarWidgetState extends State<AgendarWidget> {
                                   ),
                                 ));
                                 FFAppState().update(() {});
-                                unawaited(
-                                  () async {
-                                    await actions.alarme(
-                                      _model.data!,
-                                      _model.id!,
-                                      valueOrDefault<String>(
-                                        _model.textController1.text,
-                                        'Alarme',
-                                      ),
-                                      valueOrDefault<String>(
-                                        _model.textController2.text,
-                                        'Disparando alarme.',
-                                      ),
-                                      _model.switchAudioValue!,
-                                      _model.switchVibrarValue!,
-                                      _model.sliderVolumeValue!,
-                                      valueOrDefault<String>(
-                                        () {
-                                          if (_model.dropDownValue ==
-                                              'Audio 1') {
-                                            return 'assets/audios/alarm.mp3';
-                                          } else if (_model.dropDownValue ==
-                                              'Audio 2') {
-                                            return 'assets/audios/alarm1.mp3';
-                                          } else if (_model.dropDownValue ==
-                                              'Audio 3') {
-                                            return 'assets/audios/alarm2.mp3';
-                                          } else if (_model.dropDownValue ==
-                                              'Audio 4') {
-                                            return 'assets/audios/alarm3.mp3';
-                                          } else if (_model.dropDownValue ==
-                                              'Audio 5') {
-                                            return 'assets/audios/alarm4.mp3';
-                                          } else {
-                                            return 'assets/audios/alarm.mp3';
-                                          }
-                                        }(),
-                                        'assets/audios/alarm.mp3',
-                                      ),
-                                    );
-                                  }(),
+                                await actions.alarme(
+                                  _model.data!,
+                                  _model.id!,
+                                  valueOrDefault<String>(
+                                    _model.textController1.text,
+                                    'Alarme',
+                                  ),
+                                  valueOrDefault<String>(
+                                    _model.textController2.text,
+                                    'Disparando alarme.',
+                                  ),
+                                  _model.switchAudioValue!,
+                                  _model.switchVibrarValue!,
+                                  _model.sliderVolumeValue!,
+                                  valueOrDefault<String>(
+                                    () {
+                                      if (_model.dropDownValue == 'Audio 1') {
+                                        return 'assets/audios/alarm.mp3';
+                                      } else if (_model.dropDownValue ==
+                                          'Audio 2') {
+                                        return 'assets/audios/alarm1.mp3';
+                                      } else if (_model.dropDownValue ==
+                                          'Audio 3') {
+                                        return 'assets/audios/alarm2.mp3';
+                                      } else if (_model.dropDownValue ==
+                                          'Audio 4') {
+                                        return 'assets/audios/alarm3.mp3';
+                                      } else if (_model.dropDownValue ==
+                                          'Audio 5') {
+                                        return 'assets/audios/alarm4.mp3';
+                                      } else {
+                                        return 'assets/audios/alarm.mp3';
+                                      }
+                                    }(),
+                                    'assets/audios/alarm.mp3',
+                                  ),
                                 );
                                 await actions.apagarTela();
                                 context.safePop();

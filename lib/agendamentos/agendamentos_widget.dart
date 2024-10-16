@@ -35,6 +35,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
+        await Future.delayed(const Duration(milliseconds: 3000));
         await showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
@@ -51,6 +52,11 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
             );
           },
         ).then((value) => safeSetState(() {}));
+
+        await actions.inicializarWakelok();
+        await actions.ascenderTela();
+        await actions.sobrepor();
+        await actions.ativaTela();
       }
     });
 
@@ -398,13 +404,11 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
                                                     highlightColor:
                                                         Colors.transparent,
                                                     onTap: () async {
+                                                      await actions
+                                                          .apagarTela();
                                                       await actions.pararalarme(
                                                         agendamentosItem.id,
                                                       );
-                                                      await actions
-                                                          .apagarTela();
-                                                      await actions
-                                                          .desligaTela();
                                                       FFAppState()
                                                           .removeFromAlarme(
                                                               agendamentosItem);

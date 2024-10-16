@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:keep_screen_on/keep_screen_on.dart';
+//import 'package:keep_screen_on/keep_screen_on.dart';
 
 class AlarmStorage {
   static late SharedPreferences prefs;
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
 // Esta função será chamada quando o aplicativo for trazido para a frente ou o usuário tocar na notificação
 void onNotificationReceived() async {
   await WakelockPlus.enable();
-  await KeepScreenOn.turnOn();
+  // await KeepScreenOn.turnOn();
   // Funções de controle de tela foram removidas, já que são controladas na página
 }
 
