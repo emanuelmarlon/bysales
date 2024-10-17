@@ -39,6 +39,9 @@ class FFAppState extends ChangeNotifier {
     _safeInit(() {
       _nomeUsuario = prefs.getString('ff_nomeUsuario') ?? _nomeUsuario;
     });
+    _safeInit(() {
+      _alarmeid = prefs.getInt('ff_alarmeid') ?? _alarmeid;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -100,6 +103,13 @@ class FFAppState extends ChangeNotifier {
   set nomeUsuario(String value) {
     _nomeUsuario = value;
     prefs.setString('ff_nomeUsuario', value);
+  }
+
+  int _alarmeid = 0;
+  int get alarmeid => _alarmeid;
+  set alarmeid(int value) {
+    _alarmeid = value;
+    prefs.setInt('ff_alarmeid', value);
   }
 }
 

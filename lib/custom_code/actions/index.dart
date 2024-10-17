@@ -15,6 +15,8 @@ export 'sobrepor.dart' show sobrepor;
 export 'wakelockplugin001.dart' show wakelockplugin001;
 export 'local_notification.dart' show localNotification;
 export 'ativa_tela.dart' show ativaTela;
+export 'redirecionar_pagina_copy.dart' show redirecionarPaginaCopy;
 export 'liga_tela.dart' show ligaTela;
 export 'criar_alarme.dart' show criarAlarme;
 export 'full_escreen.dart' show fullEscreen;
+export 'segundo_plano.dart' show segundoPlano;

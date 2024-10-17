@@ -3,6 +3,7 @@ import '/components/lista_vazia_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/instant_timer.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -35,7 +36,8 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
-        await Future.delayed(const Duration(milliseconds: 3000));
+        await actions.sobrepor();
+        await actions.ascenderTela();
         await showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
@@ -47,16 +49,25 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
               onTap: () => FocusScope.of(context).unfocus(),
               child: Padding(
                 padding: MediaQuery.viewInsetsOf(context),
-                child: const AlarmeWidget(),
+                child: AlarmeWidget(
+                  alarme: FFAppState()
+                      .alarme
+                      .sortedList(keyOf: (e) => e.data!, desc: true)
+                      .first,
+                ),
               ),
             );
           },
         ).then((value) => safeSetState(() {}));
 
-        await actions.inicializarWakelok();
-        await actions.ascenderTela();
-        await actions.sobrepor();
-        await actions.ativaTela();
+        _model.instantTimer = InstantTimer.periodic(
+          duration: const Duration(milliseconds: 1000),
+          callback: (timer) async {
+            await actions.ascenderTela();
+            await actions.ligaTela();
+          },
+          startImmediately: true,
+        );
       }
     });
 
@@ -404,6 +415,8 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
                                                     highlightColor:
                                                         Colors.transparent,
                                                     onTap: () async {
+                                                      await actions
+                                                          .desligaTela();
                                                       await actions
                                                           .apagarTela();
                                                       await actions.pararalarme(

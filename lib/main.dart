@@ -14,6 +14,7 @@ void main() async {
   usePathUrlStrategy();
 
   // Start initial custom actions code
+  await actions.segundoPlano();
   await actions.inicializarAlarm();
   await actions.sobrepor();
   // End initial custom actions code
@@ -22,6 +23,11 @@ void main() async {
 
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
+
+  // Start final custom actions code
+  await actions.ligaTela();
+  await actions.ascenderTela();
+  // End final custom actions code
 
   runApp(ChangeNotifierProvider(
     create: (context) => appState,
@@ -81,11 +87,9 @@ class _MyAppState extends State<MyApp> {
       ],
       theme: ThemeData(
         brightness: Brightness.light,
-        useMaterial3: false,
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        useMaterial3: false,
       ),
       themeMode: _themeMode,
       routerConfig: _router,
