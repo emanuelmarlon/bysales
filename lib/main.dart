@@ -14,9 +14,7 @@ void main() async {
   usePathUrlStrategy();
 
   // Start initial custom actions code
-  await actions.segundoPlano();
   await actions.inicializarAlarm();
-  await actions.sobrepor();
   // End initial custom actions code
 
   await FlutterFlowTheme.initialize();
