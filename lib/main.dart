@@ -24,11 +24,6 @@ void main() async {
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
 
-  // Start final custom actions code
-  await actions.ligaTela();
-  await actions.ascenderTela();
-  // End final custom actions code
-
   runApp(ChangeNotifierProvider(
     create: (context) => appState,
     child: const MyApp(),

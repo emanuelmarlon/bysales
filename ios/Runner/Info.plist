@@ -43,7 +43,8 @@
 	<true/>
 
 
-
+	<key>PermissionGroupNotification</key>
+    <string>o appp</string>
 
 
 	<key>UILaunchStoryboardName</key>

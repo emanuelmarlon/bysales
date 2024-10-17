@@ -3,8 +3,8 @@ import '/components/lista_vazia_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/instant_timer.dart';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/permissions_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -38,6 +38,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
       if (_model.alarme == true) {
         await actions.sobrepor();
         await actions.ascenderTela();
+        await requestPermission(notificationsPermission);
         await showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
@@ -60,14 +61,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
           },
         ).then((value) => safeSetState(() {}));
 
-        _model.instantTimer = InstantTimer.periodic(
-          duration: const Duration(milliseconds: 1000),
-          callback: (timer) async {
-            await actions.ascenderTela();
-            await actions.ligaTela();
-          },
-          startImmediately: true,
-        );
+        await actions.fullEscreen();
       }
     });
 
