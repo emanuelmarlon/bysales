@@ -20,3 +20,4 @@ export 'liga_tela.dart' show ligaTela;
 export 'criar_alarme.dart' show criarAlarme;
 export 'full_escreen.dart' show fullEscreen;
 export 'segundo_plano.dart' show segundoPlano;
+export 'auto_start.dart' show autoStart;

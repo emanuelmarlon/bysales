@@ -72,12 +72,12 @@ class MyApp extends StatelessWidget {
 
 // Esta função será chamada quando o aplicativo for trazido para a frente ou o usuário tocar na notificação
 void onNotificationReceived() async {
-  // await WakelockPlus.enable();
+  await WakelockPlus.enable();
   // await KeepScreenOn.turnOn();
   // Funções de controle de tela foram removidas, já que são controladas na página
 }
 
 // Função para sobrepor a tela bloqueada (Comentada)
 //Future<void> sobrepor() async {
-//await FlutterShowWhenLocked().show(); // Permite sobrepor a tela bloqueada
+// await FlutterShowWhenLocked().show(); // Permite sobrepor a tela bloqueada
 //}
