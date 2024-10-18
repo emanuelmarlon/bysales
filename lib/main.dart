@@ -24,8 +24,6 @@ void main() async {
 
   // Start final custom actions code
   await actions.sobrepor();
-  await actions.ascenderTela();
-  await actions.ligaTela();
   // End final custom actions code
 
   runApp(ChangeNotifierProvider(

@@ -406,8 +406,6 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
                                                         Colors.transparent,
                                                     onTap: () async {
                                                       await actions
-                                                          .desligaTela();
-                                                      await actions
                                                           .apagarTela();
                                                       await actions.pararalarme(
                                                         agendamentosItem.id,
