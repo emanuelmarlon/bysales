@@ -3,10 +3,8 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/instant_timer.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'alarme_model.dart';
@@ -40,19 +38,6 @@ class _AlarmeWidgetState extends State<AlarmeWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => AlarmeModel());
-
-    // On component load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await actions.sobrepor();
-      await actions.fullEscreen();
-      _model.instantTimer = InstantTimer.periodic(
-        duration: const Duration(milliseconds: 1000),
-        callback: (timer) async {
-          await actions.ascenderTela();
-        },
-        startImmediately: true,
-      );
-    });
 
     animationsMap.addAll({
       'iconOnPageLoadAnimation': AnimationInfo(
