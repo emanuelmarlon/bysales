@@ -14,6 +14,7 @@ void main() async {
   usePathUrlStrategy();
 
   // Start initial custom actions code
+  await actions.segundoPlano();
   await actions.inicializarAlarm();
   // End initial custom actions code
 
