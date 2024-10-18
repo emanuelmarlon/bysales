@@ -35,6 +35,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
+        await actions.sobrepor();
         await actions.ascenderTela();
         await actions.fullEscreen();
         await showModalBottomSheet(
