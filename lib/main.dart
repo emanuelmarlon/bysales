@@ -22,6 +22,12 @@ void main() async {
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
 
+  // Start final custom actions code
+  await actions.sobrepor();
+  await actions.ascenderTela();
+  await actions.ligaTela();
+  // End final custom actions code
+
   runApp(ChangeNotifierProvider(
     create: (context) => appState,
     child: const MyApp(),
