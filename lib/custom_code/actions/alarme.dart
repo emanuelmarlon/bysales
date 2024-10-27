@@ -10,16 +10,19 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'dart:io';
 //import 'package:keep_screen_on/keep_screen_on.dart';s
 
 class AlarmStorage {
   static late SharedPreferences prefs;
 
+  // Inicializa o SharedPreferences
   static Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
   }
 }
 
+// Função para agendar um alarme com data, id, título, corpo da notificação, loop de áudio, vibração, volume e caminho do áudio como parâmetros
 Future<void> alarme(
   DateTime data,
   int id,
@@ -30,21 +33,30 @@ Future<void> alarme(
   double volume,
   String assetAudio,
 ) async {
+  // Inicializa o Alarm service
   await Alarm.init();
 
-  AlarmSettings alarmSettings = AlarmSettings(
+  // Definindo as configurações do alarme
+  final alarmSettings = AlarmSettings(
     id: id,
     dateTime: data,
-    assetAudioPath: assetAudio,
+    assetAudioPath: assetAudio, // Caminho para o áudio
     loopAudio: loopAudio,
     vibrate: vibrate,
     volume: volume,
-    notificationTitle: titulo,
-    notificationBody: notificationbody,
-    enableNotificationOnKill: true,
-    androidFullScreenIntent: true, // Ativa a tela com notificação em tela cheia
+    fadeDuration: 3.0,
+    warningNotificationOnKill: Platform.isIOS,
+    androidFullScreenIntent: true,
+    notificationSettings: NotificationSettings(
+      // Remova 'const' para evitar erro
+      title: titulo, // Título da notificação
+      body: notificationbody, // Corpo da notificação
+      stopButton: 'Parar alarme',
+      icon: 'notification_icon', // Ícone da notificação
+    ),
   );
 
+  // Configurando o alarme
   try {
     await Alarm.set(alarmSettings: alarmSettings);
     print('Alarme agendado com sucesso para $data com id $id');
@@ -53,6 +65,27 @@ Future<void> alarme(
   }
 }
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AlarmStorage.init();
+
+  // Exemplo de chamada da função com data, id, título, notificationbody, loopAudio, vibrate, volume e caminho do áudio como parâmetros
+  DateTime alarmeData = DateTime.now().add(const Duration(seconds: 10));
+  await alarme(
+    alarmeData, // Data do alarme
+    1, // ID do alarme
+    'Lembrete', // Título do alarme
+    'É hora de fazer uma pausa!', // Corpo da notificação
+    true, // loopAudio: Áudio será repetido
+    true, // vibrate: Dispositivo irá vibrar
+    0.5, // volume: Volume do alarme (de 0.0 a 1.0)
+    'assets/audios/alarm.mp3', // Caminho do arquivo de áudio personalizado
+  );
+
+  runApp(MyApp());
+}
+
+// Widget básico para iniciar o app
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -69,15 +102,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// Esta função será chamada quando o aplicativo for trazido para a frente ou o usuário tocar na notificação
-void onNotificationReceived() async {
-  await WakelockPlus.enable();
-  // await KeepScreenOn.turnOn();
-  // Funções de controle de tela foram removidas, já que são controladas na página
-}
-
-// Função para sobrepor a tela bloqueada (Comentada)
-//Future<void> sobrepor() async {
-// await FlutterShowWhenLocked().show(); // Permite sobrepor a tela bloqueada
-//}

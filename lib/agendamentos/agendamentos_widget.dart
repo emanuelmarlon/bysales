@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/permissions_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -33,6 +34,9 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (!(await getPermissionStatus(notificationsPermission))) {
+        await requestPermission(notificationsPermission);
+      }
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
         await actions.acordar();

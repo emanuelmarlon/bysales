@@ -44,7 +44,7 @@
 
 
 	<key>PermissionGroupNotification</key>
-    <string>o appp</string>
+    <string>O alarme precisa dessa permissão para funcionar corretamente.</string>
 
 
 	<key>UILaunchStoryboardName</key>
