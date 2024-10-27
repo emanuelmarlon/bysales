@@ -21,4 +21,3 @@ export 'criar_alarme.dart' show criarAlarme;
 export 'full_escreen.dart' show fullEscreen;
 export 'segundo_plano.dart' show segundoPlano;
 export 'acordar.dart' show acordar;
-export 'auto_start.dart' show autoStart;
