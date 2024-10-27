@@ -43,7 +43,6 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
       if (!(await getPermissionStatus(notificationsPermission))) {
         await requestPermission(notificationsPermission);
       }
-      await actions.segundoPlano();
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
         await actions.acordar();
@@ -120,14 +119,23 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
           automaticallyImplyLeading: false,
           title: Align(
             alignment: const AlignmentDirectional(0.0, 0.0),
-            child: Text(
-              'Agendamentos',
-              style: FlutterFlowTheme.of(context).headlineMedium.override(
-                    fontFamily: 'Inter Tight',
-                    color: Colors.white,
-                    fontSize: 22.0,
-                    letterSpacing: 0.0,
-                  ),
+            child: InkWell(
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () async {
+                await actions.segundoPlano();
+              },
+              child: Text(
+                'Agendamentos',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Inter Tight',
+                      color: Colors.white,
+                      fontSize: 22.0,
+                      letterSpacing: 0.0,
+                    ),
+              ),
             ),
           ),
           actions: const [],
