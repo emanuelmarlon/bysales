@@ -15,6 +15,7 @@ void main() async {
 
   // Start initial custom actions code
   await actions.inicializarAlarm();
+  await actions.autoStart();
   // End initial custom actions code
 
   await FlutterFlowTheme.initialize();
