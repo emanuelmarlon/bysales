@@ -37,6 +37,7 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
       if (!(await getPermissionStatus(notificationsPermission))) {
         await requestPermission(notificationsPermission);
       }
+      await actions.solicitarPermissao();
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
         await actions.acordar();
