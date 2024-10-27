@@ -3,6 +3,7 @@ import '/components/lista_vazia_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:async';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/permissions_util.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +35,15 @@ class _AgendamentosWidgetState extends State<AgendamentosWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      unawaited(
+        () async {
+          await actions.solicitarPermissao();
+        }(),
+      );
       if (!(await getPermissionStatus(notificationsPermission))) {
         await requestPermission(notificationsPermission);
       }
-      await actions.solicitarPermissao();
+      await actions.segundoPlano();
       _model.alarme = await actions.redirecionarPagina();
       if (_model.alarme == true) {
         await actions.acordar();
