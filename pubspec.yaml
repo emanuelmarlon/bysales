@@ -31,6 +31,7 @@ dependencies:
   android_power_manager: ^1.0.0
   audio_session: 0.1.21
   auto_size_text: 3.0.0
+  auto_start_flutter: ^0.1.1
   build_runner: ^2.4.11
   cached_network_image: 3.4.1
   cached_network_image_platform_interface: 4.1.1
@@ -129,6 +130,12 @@ flutter:
     - assets/pdfs/
     - assets/jsons/
 
+  fonts:
+    - family: 'roboto'
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
