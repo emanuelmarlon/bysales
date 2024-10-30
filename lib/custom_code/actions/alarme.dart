@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'dart:io';
-//import 'package:keep_screen_on/keep_screen_on.dart';s
 
 class AlarmStorage {
   static late SharedPreferences prefs;
@@ -22,7 +23,7 @@ class AlarmStorage {
   }
 }
 
-// Função para agendar um alarme com data, id, título, corpo da notificação, loop de áudio, vibração, volume e caminho do áudio como parâmetros
+// Função para agendar um alarme com configurações personalizadas
 Future<void> alarme(
   DateTime data,
   int id,
@@ -33,14 +34,12 @@ Future<void> alarme(
   double volume,
   String assetAudio,
 ) async {
-  // Inicializa o Alarm service
   await Alarm.init();
 
-  // Definindo as configurações do alarme
   final alarmSettings = AlarmSettings(
     id: id,
     dateTime: data,
-    assetAudioPath: assetAudio, // Caminho para o áudio
+    assetAudioPath: assetAudio,
     loopAudio: loopAudio,
     vibrate: vibrate,
     volume: volume,
@@ -48,18 +47,16 @@ Future<void> alarme(
     warningNotificationOnKill: Platform.isIOS,
     androidFullScreenIntent: true,
     notificationSettings: NotificationSettings(
-      // Remova 'const' para evitar erro
-      title: titulo, // Título da notificação
-      body: notificationbody, // Corpo da notificação
+      title: titulo,
+      body: notificationbody,
       stopButton: 'Parar alarme',
-      icon: 'notification_icon', // Ícone da notificação
+      icon: 'notification_icon',
     ),
   );
 
-  // Configurando o alarme
   try {
     await Alarm.set(alarmSettings: alarmSettings);
-    print('Alarme agendado com sucesso para $data com id $id');
+    print('Alarme agendado para $data com id $id');
   } catch (e) {
     print('Erro ao agendar o alarme: $e');
   }
@@ -68,21 +65,41 @@ Future<void> alarme(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AlarmStorage.init();
-
-  // Exemplo de chamada da função com data, id, título, notificationbody, loopAudio, vibrate, volume e caminho do áudio como parâmetros
-  DateTime alarmeData = DateTime.now().add(const Duration(seconds: 10));
-  await alarme(
-    alarmeData, // Data do alarme
-    1, // ID do alarme
-    'Lembrete', // Título do alarme
-    'É hora de fazer uma pausa!', // Corpo da notificação
-    true, // loopAudio: Áudio será repetido
-    true, // vibrate: Dispositivo irá vibrar
-    0.5, // volume: Volume do alarme (de 0.0 a 1.0)
-    'assets/audios/alarm.mp3', // Caminho do arquivo de áudio personalizado
-  );
+  await initializeService();
 
   runApp(MyApp());
+}
+
+// Inicializa o serviço de segundo plano
+Future<void> initializeService() async {
+  final service = FlutterBackgroundService();
+
+  await service.configure(
+    androidConfiguration: AndroidConfiguration(
+      onStart: onStart,
+      autoStart: true,
+      isForegroundMode: true,
+      notificationChannelId: 'alarm_channel',
+      initialNotificationTitle: 'Alarme ativo',
+      initialNotificationContent: 'Seu alarme está configurado.',
+    ),
+    iosConfiguration: IosConfiguration(
+      onForeground: onStart,
+      onBackground: (_) => false, // Serviços contínuos são limitados no iOS
+    ),
+  );
+
+  service.startService();
+}
+
+// Configuração da função onStart para manter o serviço ativo em segundo plano
+void onStart(ServiceInstance service) {
+  if (service is AndroidServiceInstance) {
+    service.setForegroundNotificationInfo(
+      title: "App de Alarme",
+      content: "O alarme está ativo em segundo plano.",
+    );
+  }
 }
 
 // Widget básico para iniciar o app
